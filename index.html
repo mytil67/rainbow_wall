@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainbow Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --background: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Arrière-plan dynamique */
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Amélioration des cartes glass */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        input, button, select {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+        }
+
+        input, select {
+            flex: 1;
+            min-width: 200px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        #random-color {
+            background: linear-gradient(to right, #FF1744, #FF9100, #FFEA00, #00E676, #00B0FF, #651FFF, #D500F9);
+            color: white;
+            font-weight: 600;
+        }
+
+        #random-color:hover {
+            background: linear-gradient(to left, #FF1744, #FF9100, #FFEA00, #00E676, #00B0FF, #651FFF, #D500F9);
+        }
+
+        .tiles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        /* Animations d'apparition des tuiles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .tile {
+            height: 100px;
+            flex: 1 0 150px;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+            animation: fadeInUp 0.5s ease forwards;
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            filter: brightness(1.1);
+            z-index: 10;
+        }
+        
+        /* Effet de glassmorphism amélioré */
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
+            border-radius: inherit;
+            backdrop-filter: blur(4px);
+            z-index: 0;
+        }
+
+        .tile-content {
+            position: relative;
+            z-index: 1;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Style des rangées de couleurs */
+        .color-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            position: relative;
+            padding: 1.5rem 1rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.8rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .color-row:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .row-label {
+            position: absolute;
+            top: -0.8rem;
+            left: 1rem;
+            padding: 0.25rem 1rem;
+            font-weight: 600;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .color-indicator {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Suggestions d'émotions */
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .suggestion-chip {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .suggestion-chip:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .input-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <header>
+                <div>
+                    <h1>Rainbow Mood</h1>
+                    <p class="subtitle">Exprimez vos émotions en couleurs</p>
+                </div>
+            </header>
+            
+            <section class="glass-card">
+                <div class="input-container">
+                    <h2>Ajouter une émotion</h2>
+                    <div class="input-row">
+                        <input type="text" id="mood-input" placeholder="Saisissez un mot ou une émotion...">
+                        <select id="color-select">
+                            <option value="#FF1744" selected>Rouge vif</option>
+                            <option value="#FF9100">Orange vif</option>
+                            <option value="#FFEA00">Jaune vif</option>
+                            <option value="#00E676">Vert vif</option>
+                            <option value="#00B0FF">Bleu vif</option>
+                            <option value="#651FFF">Indigo vif</option>
+                            <option value="#D500F9">Violet vif</option>
+                        </select>
+                        <button id="add-mood" style="background-color: #FF1744;">Ajouter</button>
+                        <button id="random-color">Couleur aléatoire</button>
+                    </div>
+                    <div class="suggestions-container">
+                        <button class="suggestion-chip" data-emotion="Joie">Joie</button>
+                        <button class="suggestion-chip" data-emotion="Amour">Amour</button>
+                        <button class="suggestion-chip" data-emotion="Sérénité">Sérénité</button>
+                        <button class="suggestion-chip" data-emotion="Excitation">Excitation</button>
+                        <button class="suggestion-chip" data-emotion="Gratitude">Gratitude</button>
+                        <button class="suggestion-chip" data-emotion="Espoir">Espoir</button>
+                        <button class="suggestion-chip" data-emotion="Inspiration">Inspiration</button>
+                    </div>
+                </div>
+                
+                <div id="tiles-container" class="tiles-container">
+                    <!-- Les tuiles seront ajoutées ici -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import des fonctions Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ_0ZZfDbHTMGayvh1rTqzjfDMnuefKl4",
+            authDomain: "rainbow-wall-2d09c.firebaseapp.com",
+            projectId: "rainbow-wall-2d09c",
+            storageBucket: "rainbow-wall-2d09c.appspot.com",
+            messagingSenderId: "78426396252",
+            appId: "1:78426396252:web:da251e8f210e3e4aa0f899",
+            databaseURL: "https://rainbow-wall-2d09c-default-rtdb.firebaseio.com"
+        };
+        
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const bullesCollection = collection(db, "bulles");
+        
+        // Éléments DOM
+        const moodInput = document.getElementById('mood-input');
+        const colorSelect = document.getElementById('color-select');
+        const addMoodButton = document.getElementById('add-mood');
+        const randomColorButton = document.getElementById('random-color');
+        const tilesContainer = document.getElementById('tiles-container');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+        
+        // Couleurs de l'arc-en-ciel
+        const rainbowColors = [
+            '#FF1744', // Rouge vif
+            '#FF9100', // Orange vif
+            '#FFEA00', // Jaune vif
+            '#00E676', // Vert vif
+            '#00B0FF', // Bleu vif
+            '#651FFF', // Indigo vif
+            '#D500F9'  // Violet vif
+        ];
+        
+        const colorNames = {
+            '#FF1744': 'Rouge vif',
+            '#FF9100': 'Orange vif',
+            '#FFEA00': 'Jaune vif',
+            '#00E676': 'Vert vif',
+            '#00B0FF': 'Bleu vif',
+            '#651FFF': 'Indigo vif',
+            '#D500F9': 'Violet vif'
+        };
+        
+        // Fonction pour ajouter une émotion
+        async function addMood() {
+            console.log("Fonction addMood appelée");
+            const texte = moodInput.value.trim();
+            const couleur = colorSelect.value;
+            
+            console.log("Texte:", texte, "Couleur:", couleur);
+            
+            if (!texte) {
+                alert("Veuillez saisir un mot ou une émotion");
+                return;
+            }
+            
+            try {
+                console.log("Tentative d'ajout à Firestore");
+                await addDoc(bullesCollection, {
+                    texte: texte,
+                    couleur: couleur,
+                    timestamp: serverTimestamp()
+                });
+                
+                console.log("Données ajoutées avec succès");
+                moodInput.value = '';
+                
+                // Générer une couleur aléatoire
+                setRandomColor();
+                
+            } catch (error) {
+                console.error("Erreur lors de l'ajout:", error);
+                alert("Erreur lors de l'ajout: " + error.message);
+            }
+        }
+        
+        // Fonction pour mettre à jour la couleur du bouton
+        function updateButtonColor() {
+            addMoodButton.style.backgroundColor = colorSelect.value;
+        }
+        
+        // Fonction pour générer une couleur aléatoire
+        function setRandomColor() {
+            const randomIndex = Math.floor(Math.random() * rainbowColors.length);
+            colorSelect.value = rainbowColors[randomIndex];
+            updateButtonColor();
+        }
+        
+        // Création de l'élément de tuile avec animation
+        function createTileElement(bulle) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            
+            // Générer un délai d'animation aléatoire pour un effet en cascade
+            const animationDelay = Math.random() * 0.5;
+            tile.style.animationDelay = `${animationDelay}s`;
+            
+            // Utiliser la couleur stockée
+            tile.style.backgroundColor = bulle.couleur;
+            
+            const content = document.createElement('div');
+            content.className = 'tile-content';
+            content.textContent = bulle.texte || 'Émotion';
+            
+            // Ajouter un événement de clic
+            tile.addEventListener('click', () => {
+                // Effet d'agrandissement temporaire
+                tile.style.transform = 'scale(1.1) translateY(-10px)';
+                setTimeout(() => {
+                    tile.style.transform = '';
+                }, 500);
+            });
+            
+            tile.appendChild(content);
+            return tile;
+        }
+        
+        // Organisation des tuiles par couleur
+        function renderTiles(bullesArray) {
+            // Vider le conteneur
+            tilesContainer.innerHTML = '';
+            
+            // Créer un conteneur pour chaque couleur
+            const colorContainers = {};
+            
+            // Initialiser les conteneurs par couleur
+            rainbowColors.forEach(color => {
+                const colorRow = document.createElement('div');
+                colorRow.className = 'color-row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                
+                const colorName = colorNames[color] || 'Couleur';
+                
+                const colorIndicator = document.createElement('span');
+                colorIndicator.className = 'color-indicator';
+                colorIndicator.style.backgroundColor = color;
+                
+                rowLabel.appendChild(colorIndicator);
+                rowLabel.appendChild(document.createTextNode(colorName));
+                
+                colorRow.appendChild(rowLabel);
+                colorContainers[color] = colorRow;
+                tilesContainer.appendChild(colorRow);
+            });
+            
+            // Ajouter chaque tuile au conteneur de sa couleur
+            bullesArray.forEach((bulle) => {
+                const tile = createTileElement(bulle);
+                
+                // Ajouter la tuile au conteneur de sa couleur
+                const container = colorContainers[bulle.couleur];
+                if (container) {
+                    container.appendChild(tile);
+                } else {
+                    // Fallback au cas où
+                    tilesContainer.appendChild(tile);
+                }
+            });
+        }
+        
+        // Événements
+        addMoodButton.addEventListener('click', function() {
+            console.log("Bouton Ajouter cliqué");
+            addMood();
+        });
+        
+        moodInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addMood();
+            }
+        });
+        
+        colorSelect.addEventListener('change', updateButtonColor);
+        
+        randomColorButton.addEventListener('click', function() {
+            console.log("Bouton Couleur aléatoire cliqué");
+            setRandomColor();
+        });
+        
+        // Suggestions d'émotions
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const emotion = this.getAttribute('data-emotion');
+                moodInput.value = emotion;
+            });
+        });
+        
+        // Écouter les changements dans Firestore
+        const q = query(bullesCollection, orderBy("timestamp", "asc"));
+        onSnapshot(q, (snapshot) => {
+            console.log("Données reçues de Firestore");
+            
+            if (snapshot.empty) {
+                console.log("Aucune donnée disponible");
+                return;
+            }
+            
+            // Convertir en tableau
+            const bullesArray = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                // S'assurer que la couleur est l'une des couleurs du drapeau arc-en-ciel
+                let couleur = data.couleur || '#FF1744';
+                
+                // Si la couleur n'est pas dans notre palette, trouver la plus proche
+                if (!rainbowColors.includes(couleur)) {
+                    couleur = '#FF1744'; // Par défaut, utiliser le rouge
+                }
+                
+                bullesArray.push({
+                    id: doc.id,
+                    texte: data.texte,
+                    couleur: couleur,
+                    timestamp: data.timestamp
+                });
+            });
+            
+            // Rendre les tuiles
+            renderTiles(bullesArray);
+        });
+        
+        // Initialiser la couleur du bouton
+        updateButtonColor();
+        
+        console.log("Application initialisée");
+    </script>
+</body>
+</html>
