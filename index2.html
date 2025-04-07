@@ -458,6 +458,7 @@
     border: none;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
+
     </style>
 </head>
 <body>
@@ -661,41 +662,105 @@
         }
         
         // Fonction pour ajouter une émotion
-        async function addMood() {
-            console.log("Fonction addMood appelée");
-            const texte = moodInput.value.trim();
-            const couleur = colorSelect.value;
-            
-            console.log("Texte:", texte, "Couleur:", couleur);
-            
-            if (!texte) {
-                alert("Veuillez saisir un mot ou une émotion");
-                return;
-            }
-            
-            try {
-                console.log("Tentative d'ajout à Firestore");
-                await addDoc(bullesCollection, {
-                    texte: texte,
-                    couleur: couleur,
-                    timestamp: serverTimestamp()
-                });
-                
-                console.log("Données ajoutées avec succès");
-                
-                // Créer des particules autour du bouton d'ajout
-                createParticles(addMoodButton, couleur);
-                
-                moodInput.value = '';
-                
-                // Générer une couleur aléatoire
-                setRandomColor();
-                
-            } catch (error) {
-                console.error("Erreur lors de l'ajout:", error);
-                alert("Erreur lors de l'ajout: " + error.message);
-            }
-        }
+       // Liste des mots interdits (à personnaliser selon vos besoins)
+const forbiddenWords = [
+    // Injures générales
+    'connard', 'salope', 'con', 'pute', 'enculé', 'merde', 'putain', 'bordel', 
+    // Insultes racistes ou discriminatoires
+    'raciste', 'racisme', 'homophobe', 'sexiste', 
+    // Autres mots offensants
+    'idiot', 'débile', 'crétin', 'abruti', 'imbécile', 
+    // Mots vulgaires
+    'bite', 'penis', 'vagin', 'cul', 'foutre', 
+    // Possible variations orthographiques
+    'c0n', 'c0nn4rd', 'p*te', 'm*rde'
+].map(word => word.toLowerCase());
+
+// Fonction de vérification des mots interdits
+function containsForbiddenWords(text) {
+    if (!text) return false;
+    
+    // Convertir en minuscules et supprimer les accents
+    const normalizedText = text.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    
+    // Vérifier chaque mot interdit
+    return forbiddenWords.some(forbiddenWord => {
+        // Vérifier si le mot interdit est dans le texte
+        // Utiliser des regex pour éviter les variations
+        const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'i');
+        return regex.test(normalizedText);
+    });
+}
+
+// Fonction pour remplacer les mots interdits
+function sanitizeText(text) {
+    if (!text) return text;
+    
+    let sanitizedText = text;
+    
+    forbiddenWords.forEach(forbiddenWord => {
+        // Créer un masque avec des étoiles de la même longueur
+        const mask = '*'.repeat(forbiddenWord.length);
+        
+        // Utiliser une regex pour remplacer le mot entier (avec des limites de mot)
+        const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'gi');
+        sanitizedText = sanitizedText.replace(regex, mask);
+    });
+    
+    return sanitizedText;
+}
+
+// Modifier la fonction addMood pour inclure le filtrage
+async function addMood() {
+    console.log("Fonction addMood appelée");
+    const texte = moodInput.value.trim();
+    const couleur = colorSelect.value;
+    
+    console.log("Texte:", texte, "Couleur:", couleur);
+    
+    if (!texte) {
+        alert("Veuillez saisir un mot ou une émotion");
+        return;
+    }
+    
+    // Vérifier les mots interdits
+    if (containsForbiddenWords(texte)) {
+        // Version filtrée du texte
+        const sanitizedText = sanitizeText(texte);
+        
+        // Alerter l'utilisateur
+        alert("Votre message contient des mots inappropriés. " +
+              "Veuillez reformuler votre émotion de manière respectueuse.\n" +
+              `Version filtrée : ${sanitizedText}`);
+        
+        return;
+    }
+    
+    try {
+        console.log("Tentative d'ajout à Firestore");
+        await addDoc(bullesCollection, {
+            texte: texte,
+            couleur: couleur,
+            timestamp: serverTimestamp()
+        });
+        
+        console.log("Données ajoutées avec succès");
+        
+        // Créer des particules autour du bouton d'ajout
+        createParticles(addMoodButton, couleur);
+        
+        moodInput.value = '';
+        
+        // Générer une couleur aléatoire
+        setRandomColor();
+        
+    } catch (error) {
+        console.error("Erreur lors de l'ajout:", error);
+        alert("Erreur lors de l'ajout: " + error.message);
+    }
+}
         
         // Fonction pour mettre à jour la couleur du bouton
         function updateButtonColor() {
@@ -745,6 +810,57 @@
             
             // Créer un conteneur pour chaque couleur
             const colorContainers = {};
+            
+// Liste des mots interdits (à personnaliser selon vos besoins)
+const forbiddenWords = [
+    // Injures générales
+    'connard', 'salope', 'con', 'pute', 'enculé', 'merde', 'putain', 'bordel', 
+    // Insultes racistes ou discriminatoires
+    'raciste', 'racisme', 'homophobe', 'sexiste', 
+    // Autres mots offensants
+    'idiot', 'débile', 'crétin', 'abruti', 'imbécile', 
+    // Mots vulgaires
+    'bite', 'penis', 'vagin', 'cul', 'foutre', 
+    // Possible variations orthographiques
+    'c0n', 'c0nn4rd', 'p*te', 'm*rde'
+].map(word => word.toLowerCase());
+
+// Fonction de vérification des mots interdits
+function containsForbiddenWords(text) {
+    if (!text) return false;
+    
+    // Convertir en minuscules et supprimer les accents
+    const normalizedText = text.toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    
+    // Vérifier chaque mot interdit
+    return forbiddenWords.some(forbiddenWord => {
+        // Vérifier si le mot interdit est dans le texte
+        // Utiliser des regex pour éviter les variations
+        const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'i');
+        return regex.test(normalizedText);
+    });
+}
+
+// Fonction pour remplacer les mots interdits
+function sanitizeText(text) {
+    if (!text) return text;
+    
+    let sanitizedText = text;
+    
+    forbiddenWords.forEach(forbiddenWord => {
+        // Créer un masque avec des étoiles de la même longueur
+        const mask = '*'.repeat(forbiddenWord.length);
+        
+        // Utiliser une regex pour remplacer le mot entier (avec des limites de mot)
+        const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'gi');
+        sanitizedText = sanitizedText.replace(regex, mask);
+    });
+    
+    return sanitizedText;
+}
+
             
             // Initialiser les conteneurs par couleur
             rainbowColors.forEach(color => {
