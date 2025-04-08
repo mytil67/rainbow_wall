@@ -1,0 +1,2299 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rainbow Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Meta tags pour les réseaux sociaux -->
+    <meta property="og:title" content="Rainbow Mood - Exprimez vos émotions en couleurs">
+    <meta property="og:description" content="Partagez vos émotions et créez un magnifique drapeau arc-en-ciel avec la chorale.">
+    <meta property="og:image" content="logo_singlees.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --background: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Arrière-plan dynamique */
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Mise en page en deux colonnes */
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        
+        .two-column-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Deux colonnes de taille égale */
+            gap: 2rem;
+            width: 100%;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Amélioration des cartes glass */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+        }
+
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        input, button, select {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+        }
+
+        input, select {
+            flex: 1;
+            min-width: 200px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        #random-color {
+            background: linear-gradient(to right, #FF1744, #FF9100, #FFEA00, #00E676, #00B0FF, #651FFF, #D500F9);
+            color: white;
+            font-weight: 600;
+        }
+
+        #random-color:hover {
+            background: linear-gradient(to left, #FF1744, #FF9100, #FFEA00, #00E676, #00B0FF, #651FFF, #D500F9);
+        }
+
+        .tiles-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex: 1;
+        }
+
+        /* Animations d'apparition des tuiles */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .tile {
+            height: 100px;
+            flex: 1 0 150px;
+            border-radius: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 500;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+            animation: fadeInUp 0.5s ease forwards;
+            transform-style: preserve-3d;
+            perspective: 800px;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+            filter: brightness(1.1);
+            z-index: 10;
+        }
+        
+        /* Effet de glassmorphism amélioré */
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.05));
+            border-radius: inherit;
+            backdrop-filter: blur(4px);
+            z-index: 0;
+        }
+
+        .tile-content {
+            position: relative;
+            z-index: 1;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Style des rangées de couleurs */
+        .color-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            position: relative;
+            padding: 1.5rem 1rem 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.8rem;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .color-row:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .row-label {
+            position: absolute;
+            top: -0.8rem;
+            left: 1rem;
+            padding: 0.25rem 1rem;
+            font-weight: 600;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+        
+        .color-indicator {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Suggestions d'émotions - style amélioré pour lisibilité */
+        .suggestions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .suggestion-chip {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(5px);
+            color: #333; /* Couleur de texte foncée pour contraste */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .suggestion-chip:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Styles pour les particules */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            opacity: 0.6;
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+                opacity: 0.6;
+            }
+            50% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) translateX(20px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Tutoriel interactif */
+        .tutorial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tutorial-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .tutorial-container {
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tutorial-step {
+            display: none;
+        }
+        
+        .tutorial-step.active {
+            display: block;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .tutorial-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+            padding-bottom: 1rem;
+        }
+        
+        .tutorial-header h2 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tutorial-body {
+            margin-bottom: 2rem;
+        }
+        
+        .tutorial-footer {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .tutorial-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .tutorial-btn.next {
+            background-color: #6366f1;
+            color: white;
+        }
+        
+        .tutorial-btn.prev {
+            background-color: #e5e7eb;
+            color: #4b5563;
+        }
+        
+        .tutorial-btn.finish {
+            background-color: #10b981;
+            color: white;
+        }
+        
+        .tutorial-progress {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+            gap: 0.5rem;
+        }
+        
+        .progress-dot {
+            width: 0.8rem;
+            height: 0.8rem;
+            border-radius: 50%;
+            background-color: #d1d5db;
+            transition: all 0.2s ease;
+        }
+        
+        .progress-dot.active {
+            background-color: #6366f1;
+            transform: scale(1.2);
+        }
+        
+        .highlight-element {
+            position: relative;
+            z-index: 1001;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.8), 0 0 30px rgba(99, 102, 241, 0.6);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.8), 0 0 30px rgba(99, 102, 241, 0.6); }
+            50% { box-shadow: 0 0 0 8px rgba(99, 102, 241, 0.4), 0 0 20px rgba(99, 102, 241, 0.3); }
+            100% { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.8), 0 0 30px rgba(99, 102, 241, 0.6); }
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .logo {
+            width: 100px; /* Ajustez selon votre logo */
+            height: 100px;
+            object-fit: contain;
+            border-radius: 50%; /* Optionnel, pour un look arrondi */
+            transition: transform 0.3s ease;
+            
+            /* Ajout de ces propriétés pour enlever le contour */
+            outline: none;
+            border: none;
+        }
+
+        /* S'assurer qu'il n'y a pas de contour lors du focus */
+        .logo:focus {
+            outline: none;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Style pour le dropdown des chansons */
+        .song-select {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            font-size: 1rem;
+            flex: 2;
+            min-width: 250px;
+        }
+        
+        .song-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+        
+        /* Style pour la carte d'émotion liée à une chanson */
+        .song-emotion-card {
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .song-emotion-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .song-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+        
+        .song-artist {
+            font-style: italic;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+        }
+        
+        .song-emotions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .song-emotion-bubble {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: white;
+            font-weight: 500;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .song-emotion-bubble:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Modal pour l'administration */
+        .admin-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .admin-modal-content {
+            background: rgba(255, 255, 255, 0.95);
+            margin: 10% auto;
+            padding: 2rem;
+            border-radius: 1rem;
+            max-width: 700px;
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        
+        .admin-close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #64748b;
+            cursor: pointer;
+        }
+        
+        .admin-form h3 {
+            margin: 1.5rem 0 0.8rem 0;
+            color: #334155;
+        }
+        
+        .songs-list {
+            margin-top: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .song-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.5rem;
+            background-color: rgba(241, 245, 249, 0.7);
+            transition: all 0.2s ease;
+        }
+        
+        .song-list-item:hover {
+            background-color: rgba(226, 232, 240, 0.9);
+        }
+        
+        .delete-song-btn {
+            background-color: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+        }
+        
+        .admin-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background-color: #f97316;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.3s ease;
+            display: none; /* Caché par défaut, affiché uniquement si l'utilisateur est admin */
+        }
+        
+        .admin-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Styles pour le bouton de connexion */
+        .login-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            background-color: #6366f1;
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Styles pour le modal d'authentification */
+        #auth-modal .admin-modal-content {
+            max-width: 400px;
+        }
+        
+        #auth-modal input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            margin-top: 0.25rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e2e8f0;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        #auth-modal label {
+            font-weight: 500;
+            color: #334155;
+        }
+        
+        #auth-error {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: none;
+        }
+        
+        #auth-modal #login-btn {
+            background-color: #6366f1;
+            color: white;
+            padding: 0.6rem 1.2rem;
+        }
+        
+        #auth-modal #logout-btn {
+            background-color: #ef4444;
+            color: white;
+            padding: 0.6rem 1.2rem;
+        }
+        
+        /* Styles pour la barre de partage sur les réseaux sociaux */
+        .social-share-bar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            z-index: 100;
+        }
+        
+        .social-share-button {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.2rem;
+        }
+        
+        .social-share-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .x-button {
+            background-color: #000000;
+        }
+        
+        .facebook-button {
+            background-color: #4267B2;
+        }
+        
+        .instagram-button {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+        }
+        
+        .whatsapp-button {
+            background-color: #25D366;
+        }
+        
+        .linkedin-button {
+            background-color: #0077B5;
+        }
+        
+        .email-button {
+            background-color: #DB4437;
+        }
+        
+        .copy-link-button {
+            background-color: #6366f1;
+        }
+
+        /* Style pour le bouton d'aide */
+        button[onclick="window.showTutorial"] {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        /* Adaptations pour mobile */
+        @media (max-width: 992px) {
+            .two-column-container {
+                grid-template-columns: 1fr; /* Une seule colonne sur mobile */
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 0.5rem;
+            }
+            
+            .container {
+                width: 100%;
+                max-width: 100%;
+                margin: 0 auto;
+                padding: 0;
+            }
+            
+            .dashboard {
+                width: 100%;
+                margin: 0 auto;
+                padding: 0;
+            }
+            
+            /* Correction du centrage des cartes */
+            .glass-card {
+                width: 100%;
+                margin: 0 auto 1rem auto;
+                padding: 1.5rem;
+            }
+            
+            .input-row {
+                flex-direction: column;
+            }
+            
+            /* En-tête centré */
+            header {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding-top: 4rem;
+            }
+            
+            header .logo-container {
+                margin: 0 auto 1rem auto;
+            }
+            
+            .login-button {
+                top: 10px;
+                right: 10px;
+            }
+            
+            .subtitle {
+                margin-bottom: 1rem;
+            }
+            
+            /* Position des boutons sur mobile */
+            .toggle-share-button {
+                position: fixed;
+                bottom: 20px;
+                left: 20px;
+                right: auto;
+                width: 3rem;
+                height: 3rem;
+                border-radius: 50%;
+                background-color: #6366f1;
+                color: white;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                z-index: 991;
+                border: none;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            /* S'assurer que le bouton d'aide est bien visible */
+            button[onclick="window.showTutorial"] {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 1000;
+            }
+            
+            /* Position du bouton Admin si présent */
+            .admin-button {
+                bottom: 80px;
+                left: 20px;
+            }
+            
+            /* Barre de partage sociale sur mobile */
+            .social-share-bar {
+                position: fixed;
+                left: 0;
+                top: auto;
+                bottom: 0;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                background-color: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(5px);
+                padding: 0.6rem 0;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                z-index: 990;
+                transition: transform 0.3s ease;
+                transform: translateY(100%); /* Caché par défaut */
+                gap: 0.5rem;
+                animation: none !important;
+            }
+            
+            /* Classe pour rendre la barre visible */
+            .social-share-bar.visible {
+                transform: translateY(0);
+            }
+        }
+
+        /* Ajustements pour très petits écrans */
+        @media (max-width: 480px) {
+            body {
+                padding: 0.25rem;
+            }
+            
+            .glass-card {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <header>
+                <div class="logo-container">
+                    <img src="logo_singlees.png" alt="Logo de la Chorale" class="logo">
+                </div>
+                <div>
+                    <h1>Rainbow Mood</h1>
+                    <p class="subtitle">Exprimez vos émotions en couleurs</p>
+                </div>
+            </header>
+            
+            <!-- Conteneur à deux colonnes -->
+            <div class="two-column-container">
+                <!-- Colonne de gauche : Associer une émotion à une chanson -->
+                <section class="glass-card">
+                    <div class="input-container">
+                        <h2>Associer une émotion à une chanson</h2>
+                        <div class="input-row">
+                            <select id="song-select" class="song-select">
+                                <option value="" disabled selected>Choisissez une chanson...</option>
+                                <!-- Les chansons seront chargées dynamiquement -->
+                            </select>
+                            <input type="text" id="song-emotion-input" placeholder="Votre émotion liée à cette chanson...">
+                            <select id="song-color-select">
+                                <option value="#FF1744" selected>Rouge vif</option>
+                                <option value="#FF9100">Orange vif</option>
+                                <option value="#FFEA00">Jaune vif</option>
+                                <option value="#00E676">Vert vif</option>
+                                <option value="#00B0FF">Bleu vif</option>
+                                <option value="#651FFF">Indigo vif</option>
+                                <option value="#D500F9">Violet vif</option>
+                            </select>
+                            <button id="add-song-emotion" style="background-color: #FF1744;">Partager</button>
+                        </div>
+                    </div>
+                    
+                    <div id="song-emotions-container" class="tiles-container">
+                        <!-- Les émotions liées aux chansons seront affichées ici -->
+                    </div>
+                </section>
+                
+                <!-- Colonne de droite : Ajouter une émotion -->
+                <section class="glass-card">
+                    <div class="input-container">
+                        <h2>Ajouter une émotion</h2>
+                        <div class="input-row">
+                            <input type="text" id="mood-input" placeholder="Saisissez un mot ou une émotion...">
+                            <select id="color-select">
+                                <option value="#FF1744" selected>Rouge vif</option>
+                                <option value="#FF9100">Orange vif</option>
+                                <option value="#FFEA00">Jaune vif</option>
+                                <option value="#00E676">Vert vif</option>
+                                <option value="#00B0FF">Bleu vif</option>
+                                <option value="#651FFF">Indigo vif</option>
+                                <option value="#D500F9">Violet vif</option>
+                            </select>
+                            <button id="add-mood" style="background-color: #FF1744;">Ajouter</button>
+                            <button id="random-color">Couleur aléatoire</button>
+                        </div>
+                        <div class="suggestions-container">
+                            <button class="suggestion-chip" data-emotion="Joie">Joie</button>
+                            <button class="suggestion-chip" data-emotion="Amour">Amour</button>
+                            <button class="suggestion-chip" data-emotion="Sérénité">Sérénité</button>
+                            <button class="suggestion-chip" data-emotion="Excitation">Excitation</button>
+                            <button class="suggestion-chip" data-emotion="Gratitude">Gratitude</button>
+                            <button class="suggestion-chip" data-emotion="Espoir">Espoir</button>
+                            <button class="suggestion-chip" data-emotion="Inspiration">Inspiration</button>
+                        </div>
+                    </div>
+                    
+                    <div id="tiles-container" class="tiles-container">
+                        <!-- Les tuiles seront ajoutées ici -->
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Barre de partage sociale -->
+    <div class="social-share-bar">
+        <button class="social-share-button x-button" id="x-share" title="Partager sur X">
+            <i class="fab fa-x-twitter"></i>
+        </button>
+        <button class="social-share-button facebook-button" id="facebook-share" title="Partager sur Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-share-button instagram-button" id="instagram-share" title="Partager sur Instagram">
+            <i class="fab fa-instagram"></i>
+        </button>
+        <button class="social-share-button whatsapp-button" id="whatsapp-share" title="Partager sur WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button class="social-share-button linkedin-button" id="linkedin-share" title="Partager sur LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+        </button>
+        <button class="social-share-button email-button" id="email-share" title="Partager par email">
+            <i class="fas fa-envelope"></i>
+        </button>
+        <button class="social-share-button copy-link-button" id="copy-link" title="Copier le lien">
+            <i class="fas fa-link"></i>
+        </button>
+    </div>
+
+    <!-- Tutoriel interactif -->
+    <div class="tutorial-overlay" id="tutorial-overlay">
+        <div class="tutorial-container">
+            <div class="tutorial-step active" data-step="1">
+                <div class="tutorial-header">
+                    <h2>Bienvenue sur Rainbow Mood !</h2>
+                    <p>Découvrez comment exprimer vos émotions en couleurs</p>
+                </div>
+                <div class="tutorial-body">
+                    <p>Rainbow Mood vous permet de partager vos émotions et de les visualiser sous forme de drapeau arc-en-ciel coloré. Ce bref tutoriel vous guidera à travers les fonctionnalités principales.</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn skip" onclick="closeTutorial()">Passer</button>
+                    <button class="tutorial-btn next" onclick="nextStep()">Suivant</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-step" data-step="2">
+                <div class="tutorial-header">
+                    <h2>Associer une émotion à une chanson</h2>
+                </div>
+                <div class="tutorial-body">
+                    <p>Sélectionnez une chanson dans la liste déroulante, saisissez une émotion que cette chanson évoque pour vous, et choisissez une couleur qui représente cette émotion.</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn prev" onclick="prevStep()">Précédent</button>
+                    <button class="tutorial-btn next" onclick="nextStep()">Suivant</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-step" data-step="3">
+                <div class="tutorial-header">
+                    <h2>Ajouter une émotion</h2>
+                </div>
+                <div class="tutorial-body">
+                    <p>Saisissez un mot ou une émotion dans le champ de texte. Vous pouvez utiliser les suggestions ci-dessous ou écrire votre propre émotion.</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn prev" onclick="prevStep()">Précédent</button>
+                    <button class="tutorial-btn next" onclick="nextStep()">Suivant</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-step" data-step="4">
+                <div class="tutorial-header">
+                    <h2>Choisissez une couleur</h2>
+                </div>
+                <div class="tutorial-body">
+                    <p>Sélectionnez une couleur pour votre émotion dans le menu déroulant. Chaque couleur représente une partie du drapeau arc-en-ciel. Vous pouvez également utiliser le bouton "Couleur aléatoire".</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn prev" onclick="prevStep()">Précédent</button>
+                    <button class="tutorial-btn next" onclick="nextStep()">Suivant</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-step" data-step="5">
+                <div class="tutorial-header">
+                    <h2>Création du drapeau</h2>
+                </div>
+                <div class="tutorial-body">
+                    <p>À mesure que vous ajoutez des émotions, elles s'organisent par couleur pour former un magnifique drapeau arc-en-ciel. Cliquez sur une tuile pour la mettre en avant.</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn prev" onclick="prevStep()">Précédent</button>
+                    <button class="tutorial-btn next" onclick="nextStep()">Suivant</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-step" data-step="6">
+                <div class="tutorial-header">
+                    <h2>Partagez avec vos amis</h2>
+                </div>
+                <div class="tutorial-body">
+                    <p>Utilisez les boutons de partage sur le côté pour inviter vos amis à rejoindre Rainbow Mood et partager leurs émotions !</p>
+                </div>
+                <div class="tutorial-footer">
+                    <button class="tutorial-btn prev" onclick="prevStep()">Précédent</button>
+                    <button class="tutorial-btn finish" onclick="closeTutorial()">Terminer</button>
+                </div>
+            </div>
+            
+            <div class="tutorial-progress">
+                <div class="progress-dot active" data-step="1"></div>
+                <div class="progress-dot" data-step="2"></div>
+                <div class="progress-dot" data-step="3"></div>
+                <div class="progress-dot" data-step="4"></div>
+                <div class="progress-dot" data-step="5"></div>
+                <div class="progress-dot" data-step="6"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal pour l'administration des chansons (visible uniquement pour les admins) -->
+    <div id="admin-modal" class="admin-modal">
+        <div class="admin-modal-content">
+            <span class="admin-close">&times;</span>
+            <h2>Gestion des chansons</h2>
+            
+            <div class="admin-form">
+                <h3>Ajouter une nouvelle chanson</h3>
+                <div class="input-row">
+                    <input type="text" id="new-song-title" placeholder="Titre de la chanson">
+                    <input type="text" id="new-song-artist" placeholder="Artiste">
+                    <button id="add-song-btn">Ajouter</button>
+                </div>
+                
+                <h3>Liste des chansons</h3>
+                <div id="songs-list" class="songs-list">
+                    <!-- Liste des chansons avec boutons de suppression -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        // Ajout des imports nécessaires pour l'authentification Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            serverTimestamp, 
+            onSnapshot, 
+            query, 
+            orderBy, 
+            where, 
+            doc, 
+            getDoc, 
+            deleteDoc, 
+            writeBatch, 
+            getDocs 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+        import { 
+            getAuth, 
+            signInWithEmailAndPassword, 
+            signOut, 
+            onAuthStateChanged 
+        } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+        
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCZ_0ZZfDbHTMGayvh1rTqzjfDMnuefKl4",
+            authDomain: "rainbow-wall-2d09c.firebaseapp.com",
+            projectId: "rainbow-wall-2d09c",
+            storageBucket: "rainbow-wall-2d09c.appspot.com",
+            messagingSenderId: "78426396252",
+            appId: "1:78426396252:web:da251e8f210e3e4aa0f899",
+            databaseURL: "https://rainbow-wall-2d09c-default-rtdb.firebaseio.com"
+        };
+        
+        // Initialisation Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Collection pour les administrateurs (pour vérifier si un utilisateur connecté est admin)
+        const adminsCollection = collection(db, "admins");
+        
+        // Variables pour la gestion des chansons et bulles
+        const bullesCollection = collection(db, "bulles");
+        const songsCollection = collection(db, "songs");
+        const songEmotionsCollection = collection(db, "song_emotions");
+        
+        // Variables pour l'authentification
+        let isAdmin = false;
+        let currentUser = null;
+        
+        // Éléments DOM existants
+        const moodInput = document.getElementById('mood-input');
+        const colorSelect = document.getElementById('color-select');
+        const addMoodButton = document.getElementById('add-mood');
+        const randomColorButton = document.getElementById('random-color');
+        const tilesContainer = document.getElementById('tiles-container');
+        const suggestionChips = document.querySelectorAll('.suggestion-chip');
+        
+        // Éléments DOM pour les chansons
+        const songSelect = document.getElementById('song-select');
+        const songEmotionInput = document.getElementById('song-emotion-input');
+        const songColorSelect = document.getElementById('song-color-select');
+        const addSongEmotionButton = document.getElementById('add-song-emotion');
+        const songEmotionsContainer = document.getElementById('song-emotions-container');
+        
+        // Création du bouton admin et de connexion
+        const adminButton = document.createElement('button');
+        adminButton.textContent = "Admin";
+        adminButton.className = "admin-button";
+        adminButton.style.display = "none"; // Caché par défaut
+        document.body.appendChild(adminButton);
+        
+        const loginButton = document.createElement('button');
+        loginButton.textContent = "Connexion";
+        loginButton.className = "login-button";
+        document.body.appendChild(loginButton);
+        
+        // Variables pour l'administration
+        const adminModal = document.getElementById('admin-modal');
+        const adminClose = document.querySelector('.admin-close');
+        const newSongTitle = document.getElementById('new-song-title');
+        const newSongArtist = document.getElementById('new-song-artist');
+        const addSongBtn = document.getElementById('add-song-btn');
+        const songsList = document.getElementById('songs-list');
+        
+        // Couleurs de l'arc-en-ciel
+        const rainbowColors = [
+            '#FF1744', // Rouge vif
+            '#FF9100', // Orange vif
+            '#FFEA00', // Jaune vif
+            '#00E676', // Vert vif
+            '#00B0FF', // Bleu vif
+            '#651FFF', // Indigo vif
+            '#D500F9'  // Violet vif
+        ];
+        
+        const colorNames = {
+            '#FF1744': 'Rouge vif',
+            '#FF9100': 'Orange vif',
+            '#FFEA00': 'Jaune vif',
+            '#00E676': 'Vert vif',
+            '#00B0FF': 'Bleu vif',
+            '#651FFF': 'Indigo vif',
+            '#D500F9': 'Violet vif'
+        };
+        
+        // Liste des mots interdits
+        const forbiddenWords = [
+            // Injures générales
+            'connard', 'salope', 'con', 'pute', 'enculé', 'merde', 'putain', 'bordel', 
+            // Insultes racistes ou discriminatoires
+            'raciste', 'racisme', 'homophobe', 'sexiste', 
+            // Autres mots offensants
+            'idiot', 'débile', 'crétin', 'abruti', 'imbécile', 
+            // Mots vulgaires
+            'bite', 'penis', 'vagin', 'cul', 'foutre', 
+            // Possible variations orthographiques
+            'c0n', 'c0nn4rd', 'p*te', 'm*rde'
+        ].map(word => word.toLowerCase());
+
+        // Fonction de vérification des mots interdits
+        function containsForbiddenWords(text) {
+            if (!text) return false;
+            
+            // Convertir en minuscules et supprimer les accents
+            const normalizedText = text.toLowerCase()
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, '');
+            
+            // Vérifier chaque mot interdit
+            return forbiddenWords.some(forbiddenWord => {
+                // Vérifier si le mot interdit est dans le texte
+                // Utiliser des regex pour éviter les variations
+                const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'i');
+                return regex.test(normalizedText);
+            });
+        }
+
+        // Fonction pour remplacer les mots interdits
+        function sanitizeText(text) {
+            if (!text) return text;
+            
+            let sanitizedText = text;
+            
+            forbiddenWords.forEach(forbiddenWord => {
+                // Créer un masque avec des étoiles de la même longueur
+                const mask = '*'.repeat(forbiddenWord.length);
+                
+                // Utiliser une regex pour remplacer le mot entier (avec des limites de mot)
+                const regex = new RegExp(`\\b${forbiddenWord}\\b`, 'gi');
+                sanitizedText = sanitizedText.replace(regex, mask);
+            });
+            
+            return sanitizedText;
+        }
+        
+        // Interface d'authentification
+        function createAuthUI() {
+            // Création du modal d'authentification s'il n'existe pas déjà
+            let authModal = document.getElementById('auth-modal');
+            
+            if (!authModal) {
+                authModal = document.createElement('div');
+                authModal.id = 'auth-modal';
+                authModal.className = 'admin-modal';
+                
+                authModal.innerHTML = `
+                    <div class="admin-modal-content" style="max-width: 400px;">
+                        <span class="admin-close" id="auth-close">&times;</span>
+                        <h2 id="auth-title">Connexion</h2>
+                        
+                        <div id="login-form">
+                            <div class="input-row" style="flex-direction: column; gap: 0.5rem; margin-bottom: 1rem;">
+                                <label for="auth-email">Email:</label>
+                                <input type="email" id="auth-email" placeholder="example@email.com">
+                            </div>
+                            
+                            <div class="input-row" style="flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                                <label for="auth-password">Mot de passe:</label>
+                                <input type="password" id="auth-password" placeholder="Votre mot de passe">
+                            </div>
+                            
+                            <div id="auth-error" style="color: #ef4444; margin-bottom: 1rem; font-size: 0.9rem; display: none;">
+                                <!-- Message d'erreur affiché ici -->
+                            </div>
+                            
+                            <div class="input-row" style="justify-content: flex-end;">
+                                <button id="login-btn" class="tutorial-btn next">Se connecter</button>
+                            </div>
+                        </div>
+                        
+                        <div id="user-info" style="display: none;">
+                            <p style="margin-bottom: 1rem;">Connecté en tant que: <span id="user-email"></span></p>
+                            <div class="input-row" style="justify-content: flex-end;">
+                                <button id="logout-btn" class="tutorial-btn" style="background-color: #ef4444; color: white;">Déconnexion</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(authModal);
+                
+                // Événements des boutons
+                document.getElementById('auth-close').addEventListener('click', () => {
+                    authModal.style.display = 'none';
+                });
+                
+                document.getElementById('login-btn').addEventListener('click', handleLogin);
+                document.getElementById('logout-btn').addEventListener('click', handleLogout);
+                
+                // Fermer le modal en cliquant en dehors
+                window.addEventListener('click', function(e) {
+                    if (e.target === authModal) {
+                        authModal.style.display = 'none';
+                    }
+                });
+            }
+            
+            return authModal;
+        }
+
+        // Fonction de connexion
+        async function handleLogin() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const errorElement = document.getElementById('auth-error');
+            
+            if (!email || !password) {
+                errorElement.textContent = "Veuillez remplir tous les champs";
+                errorElement.style.display = "block";
+                return;
+            }
+            
+            try {
+                errorElement.style.display = "none";
+                
+                // Tentative de connexion
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                
+                // Réinitialiser les champs
+                document.getElementById('auth-email').value = '';
+                document.getElementById('auth-password').value = '';
+                
+                // Mettre à jour l'interface utilisateur
+                updateUIAfterLogin(user);
+                
+                // Vérifier si l'utilisateur est admin
+                checkIfUserIsAdmin(user);
+                
+            } catch (error) {
+                console.error("Erreur de connexion:", error);
+                
+                switch(error.code) {
+                    case 'auth/user-not-found':
+                    case 'auth/wrong-password':
+                        errorElement.textContent = "Email ou mot de passe incorrect";
+                        break;
+                    case 'auth/too-many-requests':
+                        errorElement.textContent = "Trop de tentatives échouées. Veuillez réessayer plus tard";
+                        break;
+                    default:
+                        errorElement.textContent = "Erreur de connexion: " + error.message;
+                }
+                
+                errorElement.style.display = "block";
+            }
+        }
+
+        // Fonction de déconnexion
+        async function handleLogout() {
+            try {
+                await signOut(auth);
+                // La mise à jour de l'interface sera gérée par onAuthStateChanged
+            } catch (error) {
+                console.error("Erreur lors de la déconnexion:", error);
+                alert("Erreur lors de la déconnexion: " + error.message);
+            }
+        }
+
+        // Mettre à jour l'interface après connexion
+        function updateUIAfterLogin(user) {
+            // Mettre à jour la modal de connexion
+            const loginForm = document.getElementById('login-form');
+            const userInfo = document.getElementById('user-info');
+            const userEmail = document.getElementById('user-email');
+            
+            if (user) {
+                // Utilisateur connecté
+                loginForm.style.display = 'none';
+                userInfo.style.display = 'block';
+                userEmail.textContent = user.email;
+                
+                // Changer le texte du bouton de connexion
+                loginButton.textContent = "Mon compte";
+            } else {
+                // Utilisateur déconnecté
+                loginForm.style.display = 'block';
+                userInfo.style.display = 'none';
+                
+                // Réinitialiser le bouton de connexion
+                loginButton.textContent = "Connexion";
+                
+                // Cacher le bouton admin
+                adminButton.style.display = 'none';
+                
+                // Fermer la modal d'administration si elle est ouverte
+                if (adminModal && adminModal.style.display === 'block') {
+                    adminModal.style.display = 'none';
+                }
+            }
+        }
+
+        // Vérifier si l'utilisateur est administrateur
+        async function checkIfUserIsAdmin(user) {
+            if (!user) return false;
+            
+            try {
+                // Vérifier dans la collection des admins
+                const adminQuery = query(adminsCollection, where("email", "==", user.email));
+                const querySnapshot = await getDocs(adminQuery);
+                
+                isAdmin = !querySnapshot.empty;
+                
+                // Afficher le bouton admin si l'utilisateur est administrateur
+                adminButton.style.display = isAdmin ? 'block' : 'none';
+                
+                return isAdmin;
+            } catch (error) {
+                console.error("Erreur lors de la vérification des droits d'administration:", error);
+                isAdmin = false;
+                adminButton.style.display = 'none';
+                return false;
+            }
+        }
+
+        // Observer les changements d'état d'authentification
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            
+            // Mettre à jour l'interface utilisateur
+            updateUIAfterLogin(user);
+            
+            // Vérifier les droits d'administration si un utilisateur est connecté
+            if (user) {
+                checkIfUserIsAdmin(user);
+            } else {
+                isAdmin = false;
+                adminButton.style.display = 'none';
+            }
+        });
+
+        // Afficher la modal d'authentification quand on clique sur le bouton de connexion
+        loginButton.addEventListener('click', () => {
+            const authModal = createAuthUI();
+            
+            // Si l'utilisateur est déjà connecté, afficher ses informations
+            if (currentUser) {
+                document.getElementById('login-form').style.display = 'none';
+                document.getElementById('user-info').style.display = 'block';
+                document.getElementById('user-email').textContent = currentUser.email;
+            } else {
+                document.getElementById('login-form').style.display = 'block';
+                document.getElementById('user-info').style.display = 'none';
+            }
+            
+            authModal.style.display = 'block';
+        });
+
+        // Afficher la modal d'administration quand on clique sur le bouton admin
+        adminButton.addEventListener('click', () => {
+            if (isAdmin) {
+                openAdminModal();
+            } else {
+                alert("Vous n'avez pas les droits d'administration nécessaires.");
+            }
+        });
+        
+        // Système de particules
+        function createParticles(element, color) {
+            // Créer entre 5 et 10 particules
+            const numParticles = Math.floor(Math.random() * 6) + 5;
+            
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Positionner la particule près de l'élément source
+                const rect = element.getBoundingClientRect();
+                const x = rect.left + Math.random() * rect.width;
+                const y = rect.top + Math.random() * rect.height;
+                
+                // Taille aléatoire entre 5 et 15 pixels
+                const size = Math.random() * 10 + 5;
+                
+                // Appliquer les styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${x}px`;
+                particle.style.top = `${y}px`;
+                particle.style.backgroundColor = color;
+                
+                // Animation
+                particle.style.animation = `float ${Math.random() * 2 + 2}s linear forwards`;
+                
+                // Ajouter au body
+                document.body.appendChild(particle);
+                
+                // Nettoyer après l'animation
+                setTimeout(() => {
+                    document.body.removeChild(particle);
+                }, 4000);
+            }
+        }
+        
+        // Fonction pour ajouter une émotion
+        async function addMood() {
+            console.log("Fonction addMood appelée");
+            const texte = moodInput.value.trim();
+            const couleur = colorSelect.value;
+            
+            console.log("Texte:", texte, "Couleur:", couleur);
+            
+            if (!texte) {
+                alert("Veuillez saisir un mot ou une émotion");
+                return;
+            }
+            
+            // Vérifier les mots interdits
+            if (containsForbiddenWords(texte)) {
+                // Version filtrée du texte
+                const sanitizedText = sanitizeText(texte);
+                
+                // Alerter l'utilisateur
+                alert("Votre message contient des mots inappropriés. " +
+                      "Veuillez reformuler votre émotion de manière respectueuse.\n" +
+                      `Version filtrée : ${sanitizedText}`);
+                
+                return;
+            }
+            
+            try {
+                console.log("Tentative d'ajout à Firestore");
+                await addDoc(bullesCollection, {
+                    texte: texte,
+                    couleur: couleur,
+                    timestamp: serverTimestamp(),
+                    userEmail: currentUser ? currentUser.email : "anonymous" // Permet l'ajout sans connexion
+                });
+                
+                console.log("Données ajoutées avec succès");
+                
+                // Créer des particules autour du bouton d'ajout
+                createParticles(addMoodButton, couleur);
+                
+                moodInput.value = '';
+                
+                // Générer une couleur aléatoire
+                setRandomColor();
+                
+            } catch (error) {
+                console.error("Erreur lors de l'ajout:", error);
+                alert("Erreur lors de l'ajout: " + error.message);
+            }
+        }
+        
+        // Fonction pour mettre à jour la couleur du bouton
+        function updateButtonColor() {
+            addMoodButton.style.backgroundColor = colorSelect.value;
+        }
+        
+        // Fonction pour générer une couleur aléatoire
+        function setRandomColor() {
+            const randomIndex = Math.floor(Math.random() * rainbowColors.length);
+            colorSelect.value = rainbowColors[randomIndex];
+            updateButtonColor();
+        }
+        
+        // Création de l'élément de tuile avec animation
+        function createTileElement(bulle) {
+            const tile = document.createElement('div');
+            tile.className = 'tile';
+            
+            // Générer un délai d'animation aléatoire pour un effet en cascade
+            const animationDelay = Math.random() * 0.5;
+            tile.style.animationDelay = `${animationDelay}s`;
+            
+            // Utiliser la couleur stockée
+            tile.style.backgroundColor = bulle.couleur;
+            
+            const content = document.createElement('div');
+            content.className = 'tile-content';
+            content.textContent = bulle.texte || 'Émotion';
+            
+            // Ajouter un événement de clic
+            tile.addEventListener('click', () => {
+                // Effet d'agrandissement temporaire
+                tile.style.transform = 'scale(1.1) translateY(-10px)';
+                setTimeout(() => {
+                    tile.style.transform = '';
+                }, 500);
+            });
+            
+            tile.appendChild(content);
+            return tile;
+        }
+        
+        // Organisation des tuiles par couleur
+        function renderTiles(bullesArray) {
+            // Vider le conteneur
+            tilesContainer.innerHTML = '';
+            
+            // Créer un conteneur pour chaque couleur
+            const colorContainers = {};
+            
+            // Initialiser les conteneurs par couleur
+            rainbowColors.forEach(color => {
+                const colorRow = document.createElement('div');
+                colorRow.className = 'color-row';
+                
+                const rowLabel = document.createElement('div');
+                rowLabel.className = 'row-label';
+                
+                const colorName = colorNames[color] || 'Couleur';
+                
+                const colorIndicator = document.createElement('span');
+                colorIndicator.className = 'color-indicator';
+                colorIndicator.style.backgroundColor = color;
+                
+                rowLabel.appendChild(colorIndicator);
+                rowLabel.appendChild(document.createTextNode(colorName));
+                
+                colorRow.appendChild(rowLabel);
+                colorContainers[color] = colorRow;
+                tilesContainer.appendChild(colorRow);
+            });
+            
+            // Ajouter chaque tuile au conteneur de sa couleur
+            bullesArray.forEach((bulle) => {
+                const tile = createTileElement(bulle);
+                
+                // Ajouter la tuile au conteneur de sa couleur
+                const container = colorContainers[bulle.couleur];
+                if (container) {
+                    container.appendChild(tile);
+                } else {
+                    // Fallback au cas où
+                    tilesContainer.appendChild(tile);
+                }
+            });
+        }
+        
+        // Chargement des chansons depuis Firebase
+        async function loadSongs() {
+            const songsQuery = query(songsCollection, orderBy("title", "asc"));
+            
+            onSnapshot(songsQuery, (snapshot) => {
+                // Vider le select
+                songSelect.innerHTML = '<option value="" disabled selected>Choisissez une chanson...</option>';
+                
+                // Vider la liste dans le modal admin
+                if (isAdmin) {
+                    songsList.innerHTML = '';
+                }
+                
+                if (snapshot.empty) {
+                    console.log("Aucune chanson disponible");
+                    return;
+                }
+                
+                snapshot.forEach(doc => {
+                    const song = doc.data();
+                    
+                    // Ajouter l'option au select
+                    const option = document.createElement('option');
+                    option.value = doc.id;
+                    option.textContent = `${song.title} - ${song.artist}`;
+                    songSelect.appendChild(option);
+                    
+                    // Ajouter à la liste admin si l'utilisateur est admin
+                    if (isAdmin) {
+                        const songItem = document.createElement('div');
+                        songItem.className = 'song-list-item';
+                        songItem.innerHTML = `
+                            <div>${song.title} - ${song.artist}</div>
+                            <button class="delete-song-btn" data-id="${doc.id}">Supprimer</button>
+                        `;
+                        songsList.appendChild(songItem);
+                        
+                        // Ajouter l'événement de suppression
+                        const deleteBtn = songItem.querySelector('.delete-song-btn');
+                        deleteBtn.addEventListener('click', () => deleteSong(doc.id));
+                    }
+                });
+            });
+        }
+        
+        // Chargement des émotions liées aux chansons
+        function loadSongEmotions() {
+            const songEmotionsQuery = query(songEmotionsCollection, orderBy("timestamp", "desc"));
+            
+            onSnapshot(songEmotionsQuery, (snapshot) => {
+                // Vider le conteneur
+                songEmotionsContainer.innerHTML = '';
+                
+                if (snapshot.empty) {
+                    console.log("Aucune émotion liée à une chanson disponible");
+                    return;
+                }
+                
+                // Organiser par chansons pour regrouper les émotions
+                const songGroups = {};
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    if (!songGroups[data.songId]) {
+                        songGroups[data.songId] = {
+                            songTitle: data.songTitle,
+                            songArtist: data.songArtist,
+                            emotions: []
+                        };
+                    }
+                    
+                    songGroups[data.songId].emotions.push({
+                        id: doc.id,
+                        text: data.emotion,
+                        color: data.color,
+                        userEmail: data.userEmail || "anonymous"
+                    });
+                });
+                
+                // Créer les cartes pour chaque chanson
+                for (const songId in songGroups) {
+                    const songGroup = songGroups[songId];
+                    
+                    const songCard = document.createElement('div');
+                    songCard.className = 'song-emotion-card';
+                    
+                    // Ajouter le titre et l'artiste
+                    const songTitle = document.createElement('div');
+                    songTitle.className = 'song-title';
+                    songTitle.textContent = songGroup.songTitle;
+                    
+                    const songArtist = document.createElement('div');
+                    songArtist.className = 'song-artist';
+                    songArtist.textContent = songGroup.songArtist;
+                    
+                    const emotionsContainer = document.createElement('div');
+                    emotionsContainer.className = 'song-emotions';
+                    
+                    // Ajouter toutes les bulles d'émotions pour cette chanson
+                    songGroup.emotions.forEach(emotion => {
+                        const bubble = document.createElement('div');
+                        bubble.className = 'song-emotion-bubble';
+                        bubble.textContent = emotion.text;
+                        bubble.style.backgroundColor = emotion.color;
+                        bubble.title = `Ajouté par: ${emotion.userEmail}`;
+                        
+                        // Ajouter un effet lors du clic
+                        bubble.addEventListener('click', () => {
+                            bubble.style.transform = 'scale(1.1)';
+                            setTimeout(() => {
+                                bubble.style.transform = '';
+                            }, 300);
+                        });
+                        
+                        emotionsContainer.appendChild(bubble);
+                    });
+                    
+                    songCard.appendChild(songTitle);
+                    songCard.appendChild(songArtist);
+                    songCard.appendChild(emotionsContainer);
+                    
+                    songEmotionsContainer.appendChild(songCard);
+                }
+            });
+        }
+        
+        // Fonction pour ajouter une émotion liée à une chanson
+        async function addSongEmotion() {
+            const songId = songSelect.value;
+            const emotion = songEmotionInput.value.trim();
+            const color = songColorSelect.value;
+            
+            if (!songId) {
+                alert("Veuillez choisir une chanson");
+                return;
+            }
+            
+            if (!emotion) {
+                alert("Veuillez saisir une émotion");
+                return;
+            }
+            
+            // Vérifier les mots interdits
+            if (containsForbiddenWords(emotion)) {
+                const sanitizedText = sanitizeText(emotion);
+                alert("Votre message contient des mots inappropriés. " +
+                      "Veuillez reformuler votre émotion de manière respectueuse.\n" +
+                      `Version filtrée : ${sanitizedText}`);
+                return;
+            }
+            
+            try {
+                // Récupérer les informations de la chanson
+                const songDoc = await getDoc(doc(songsCollection, songId));
+                
+                if (!songDoc.exists()) {
+                    alert("Cette chanson n'existe plus");
+                    return;
+                }
+                
+                const songData = songDoc.data();
+                
+                // Ajouter l'émotion à la collection
+                await addDoc(songEmotionsCollection, {
+                    songId: songId,
+                    songTitle: songData.title,
+                    songArtist: songData.artist,
+                    emotion: emotion,
+                    color: color,
+                    timestamp: serverTimestamp(),
+                    // Stocker l'email de l'utilisateur s'il est connecté
+                    userEmail: currentUser ? currentUser.email : "anonymous"
+                });
+                
+                // Réinitialiser le formulaire
+                songEmotionInput.value = '';
+                
+                // Créer des particules pour l'effet visuel
+                createParticles(addSongEmotionButton, color);
+                
+            } catch (error) {
+                console.error("Erreur lors de l'ajout de l'émotion:", error);
+                alert("Erreur lors de l'ajout: " + error.message);
+            }
+        }
+        
+        // Fonction pour ajouter une nouvelle chanson (admin)
+        async function addSong() {
+            if (!isAdmin) {
+                alert("Vous n'avez pas les droits d'administration");
+                return;
+            }
+            
+            const title = newSongTitle.value.trim();
+            const artist = newSongArtist.value.trim();
+            
+            if (!title || !artist) {
+                alert("Veuillez remplir tous les champs");
+                return;
+            }
+            
+            try {
+                await addDoc(songsCollection, {
+                    title: title,
+                    artist: artist,
+                    timestamp: serverTimestamp(),
+                    createdBy: currentUser.email // Stocker qui a créé la chanson
+                });
+                
+                // Réinitialiser le formulaire
+                newSongTitle.value = '';
+                newSongArtist.value = '';
+                
+                alert("Chanson ajoutée avec succès!");
+                
+            } catch (error) {
+                console.error("Erreur lors de l'ajout de la chanson:", error);
+                alert("Erreur lors de l'ajout: " + error.message);
+            }
+        }
+        
+        // Fonction pour supprimer une chanson (admin)
+        async function deleteSong(songId) {
+            if (!isAdmin) {
+                alert("Vous n'avez pas les droits d'administration");
+                return;
+            }
+            
+            if (!confirm("Êtes-vous sûr de vouloir supprimer cette chanson?")) {
+                return;
+            }
+            
+            try {
+                await deleteDoc(doc(songsCollection, songId));
+                
+                // Supprimer également toutes les émotions liées à cette chanson
+                const emotionsQuery = query(songEmotionsCollection, where("songId", "==", songId));
+                const emotionsSnapshot = await getDocs(emotionsQuery);
+                
+                const batch = writeBatch(db);
+                emotionsSnapshot.forEach((doc) => {
+                    batch.delete(doc.ref);
+                });
+                
+                await batch.commit();
+                
+                alert("Chanson supprimée avec succès!");
+                
+            } catch (error) {
+                console.error("Erreur lors de la suppression:", error);
+                alert("Erreur lors de la suppression: " + error.message);
+            }
+        }
+        
+        // Fonctions pour gérer le modal admin
+        function openAdminModal() {
+            adminModal.style.display = "block";
+        }
+        
+        function closeAdminModal() {
+            adminModal.style.display = "none";
+        }
+        
+        // Événements
+        addMoodButton.addEventListener('click', function() {
+            console.log("Bouton Ajouter cliqué");
+            addMood();
+        });
+        
+        moodInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addMood();
+            }
+        });
+        
+        colorSelect.addEventListener('change', updateButtonColor);
+        
+        randomColorButton.addEventListener('click', function() {
+            console.log("Bouton Couleur aléatoire cliqué");
+            setRandomColor();
+        });
+        
+        // Suggestions d'émotions
+        suggestionChips.forEach(chip => {
+            chip.addEventListener('click', function() {
+                const emotion = this.getAttribute('data-emotion');
+                moodInput.value = emotion;
+            });
+        });
+
+        // Événements pour les chansons
+        addSongEmotionButton.addEventListener('click', addSongEmotion);
+        
+        songEmotionInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addSongEmotion();
+            }
+        });
+        
+        songColorSelect.addEventListener('change', function() {
+            addSongEmotionButton.style.backgroundColor = songColorSelect.value;
+        });
+        
+        // Événements pour l'admin
+        addSongBtn.addEventListener('click', addSong);
+        adminClose.addEventListener('click', closeAdminModal);
+        
+        // Cliquer en dehors du modal pour le fermer
+        window.addEventListener('click', function(e) {
+            if (e.target === adminModal) {
+                closeAdminModal();
+            }
+        });
+        // Écouter les changements dans Firestore pour les bulles
+        const q = query(bullesCollection, orderBy("timestamp", "asc"));
+        onSnapshot(q, (snapshot) => {
+            console.log("Données reçues de Firestore");
+            
+            if (snapshot.empty) {
+                console.log("Aucune donnée disponible");
+                return;
+            }
+            
+            // Convertir en tableau
+            const bullesArray = [];
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                // S'assurer que la couleur est l'une des couleurs du drapeau arc-en-ciel
+                let couleur = data.couleur || '#FF1744';
+                
+                // Si la couleur n'est pas dans notre palette, trouver la plus proche
+                if (!rainbowColors.includes(couleur)) {
+                    couleur = '#FF1744'; // Par défaut, utiliser le rouge
+                }
+                
+                bullesArray.push({
+                    id: doc.id,
+                    texte: data.texte,
+                    couleur: couleur,
+                    timestamp: data.timestamp,
+                    userEmail: data.userEmail || "anonymous"
+                });
+            });
+            
+            // Rendre les tuiles
+            renderTiles(bullesArray);
+        });
+        
+        // Tutoriel interactif - Fonctions globales
+        window.currentStep = 1;
+        window.totalSteps = 6; // Mis à jour pour inclure l'étape des chansons et partage
+
+        window.showTutorial = function() {
+            const tutorialOverlay = document.getElementById('tutorial-overlay');
+            tutorialOverlay.classList.add('active');
+            window.setStep(1); // Commencer au premier pas
+        };
+
+        window.closeTutorial = function() {
+            const tutorialOverlay = document.getElementById('tutorial-overlay');
+            tutorialOverlay.classList.remove('active');
+            
+            // Sauvegarder que le tutoriel a été vu
+            localStorage.setItem('tutorialSeen', 'true');
+        };
+
+        window.nextStep = function() {
+            if (window.currentStep < window.totalSteps) {
+                window.setStep(window.currentStep + 1);
+            }
+        };
+
+        window.prevStep = function() {
+            if (window.currentStep > 1) {
+                window.setStep(window.currentStep - 1);
+            }
+        };
+
+        window.setStep = function(step) {
+            // Cacher tous les pas
+            document.querySelectorAll('.tutorial-step').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // Afficher le pas actuel
+            document.querySelector(`.tutorial-step[data-step="${step}"]`).classList.add('active');
+            
+            // Mettre à jour les points de progression
+            document.querySelectorAll('.progress-dot').forEach(dot => {
+                dot.classList.remove('active');
+            });
+            document.querySelector(`.progress-dot[data-step="${step}"]`).classList.add('active');
+            
+            // Mettre à jour l'étape courante
+            window.currentStep = step;
+            
+            // Retirer les mises en évidence précédentes
+            document.querySelectorAll('.highlight-element').forEach(el => {
+                el.classList.remove('highlight-element');
+            });
+            
+            // Mettre en évidence l'élément correspondant à l'étape
+            highlightElementForStep(step);
+        };
+
+        function highlightElementForStep(step) {
+            switch(step) {
+                case 2:
+                    document.getElementById('song-select').classList.add('highlight-element');
+                    break;
+                case 3:
+                    document.getElementById('mood-input').classList.add('highlight-element');
+                    break;
+                case 4:
+                    document.getElementById('color-select').classList.add('highlight-element');
+                    break;
+                case 5:
+                    document.getElementById('tiles-container').classList.add('highlight-element');
+                    break;
+                case 6:
+                    document.querySelector('.social-share-bar').classList.add('highlight-element');
+                    break;
+            }
+        }
+        
+        // Vérifier si le tutoriel a déjà été vu
+        const tutorialSeen = localStorage.getItem('tutorialSeen');
+        if (!tutorialSeen) {
+            // Afficher le tutoriel après un court délai
+            setTimeout(window.showTutorial, 1000);
+        }
+        
+        // Ajouter un bouton pour réafficher le tutoriel
+       // Ajouter un bouton pour réafficher le tutoriel
+const showTutorialButton = document.createElement('button');
+showTutorialButton.textContent = "Aide";
+showTutorialButton.style.position = "fixed";
+showTutorialButton.style.bottom = "80px"; // Déplacé plus haut
+showTutorialButton.style.right = "20px";
+showTutorialButton.style.padding = "0.5rem 1rem";
+showTutorialButton.style.borderRadius = "0.5rem";
+showTutorialButton.style.backgroundColor = '#FF1744';
+showTutorialButton.style.color = 'white';
+showTutorialButton.style.border = '2px solid #FF1744';
+showTutorialButton.style.cursor = "pointer";
+showTutorialButton.style.zIndex = "1500"; // Z-index plus élevé
+showTutorialButton.style.fontWeight = "600";
+showTutorialButton.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+showTutorialButton.style.transition = "all 0.3s ease";
+
+        // Effet de survol
+        showTutorialButton.addEventListener('mouseenter', () => {
+            showTutorialButton.style.transform = 'translateY(-3px)';
+            showTutorialButton.style.boxShadow = "0 6px 8px rgba(0, 0, 0, 0.2)";
+        });
+
+        showTutorialButton.addEventListener('mouseleave', () => {
+            showTutorialButton.style.transform = 'translateY(0)';
+            showTutorialButton.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+        });
+
+        showTutorialButton.addEventListener('click', window.showTutorial);
+        document.body.appendChild(showTutorialButton);
+        
+        // Code pour la barre de partage sociale
+        (function setupSocialShareBar() {
+            // Référence à la barre de partage
+            const shareBar = document.querySelector('.social-share-bar');
+            
+            // S'assurer que la barre est cachée par défaut (pour mobile)
+            if (window.innerWidth <= 768 && shareBar) {
+                shareBar.style.transform = 'translateY(100%)';
+                
+                // Créer et ajouter le bouton de bascule
+                const toggleButton = document.createElement('button');
+toggleButton.className = 'toggle-share-button';
+toggleButton.innerHTML = '<i class="fas fa-share-alt"></i>';
+toggleButton.setAttribute('aria-label', 'Afficher les options de partage');
+// Ajouter ces styles directs
+toggleButton.style.position = "fixed";
+toggleButton.style.bottom = "20px";
+toggleButton.style.left = "20px"; // À gauche
+toggleButton.style.right = "auto"; // Annuler toute valeur de right
+toggleButton.style.zIndex = "1500";
+document.body.appendChild(toggleButton);
+                
+                // Fonction pour basculer la visibilité de la barre
+                toggleButton.addEventListener('click', function() {
+                    if (shareBar.classList.contains('visible')) {
+                        // Cacher la barre
+                        shareBar.classList.remove('visible');
+                        shareBar.style.transform = 'translateY(100%)';
+                        toggleButton.innerHTML = '<i class="fas fa-share-alt"></i>';
+                        toggleButton.setAttribute('aria-label', 'Afficher les options de partage');
+                    } else {
+                        // Montrer la barre
+                        shareBar.classList.add('visible');
+                        shareBar.style.transform = 'translateY(0)';
+                        toggleButton.innerHTML = '<i class="fas fa-times"></i>';
+                        toggleButton.setAttribute('aria-label', 'Masquer les options de partage');
+                    }
+                });
+            }
+        })();
+
+        // Gérer les changements de taille d'écran
+        window.addEventListener('resize', function() {
+            const shareBar = document.querySelector('.social-share-bar');
+            const toggleButton = document.querySelector('.toggle-share-button');
+            
+            if (window.innerWidth <= 768) {
+                // Sur mobile
+                if (shareBar && !shareBar.classList.contains('visible')) {
+                    shareBar.style.transform = 'translateY(100%)';
+                }
+                
+                // Créer le bouton s'il n'existe pas
+                if (!toggleButton) {
+                    const newToggleButton = document.createElement('button');
+                    newToggleButton.className = 'toggle-share-button';
+                    newToggleButton.innerHTML = '<i class="fas fa-share-alt"></i>';
+                    document.body.appendChild(newToggleButton);
+                    
+                    // Ajouter l'événement de clic
+                    newToggleButton.addEventListener('click', function() {
+                        shareBar.classList.toggle('visible');
+                        if (shareBar.classList.contains('visible')) {
+                            shareBar.style.transform = 'translateY(0)';
+                            newToggleButton.innerHTML = '<i class="fas fa-times"></i>';
+                        } else {
+                            shareBar.style.transform = 'translateY(100%)';
+                            newToggleButton.innerHTML = '<i class="fas fa-share-alt"></i>';
+                        }
+                    });
+                }
+            } else {
+                // Sur desktop
+                if (shareBar) {
+                    shareBar.style.transform = '';
+                    shareBar.classList.remove('visible');
+                }
+                
+                // Supprimer le bouton sur desktop
+                if (toggleButton) {
+                    toggleButton.remove();
+                }
+            }
+        });
+
+        // Fonctions de partage sur les réseaux sociaux
+        function setupSocialSharing() {
+            // Informations à partager
+            const shareTitle = "Rainbow Mood - Exprimez vos émotions en couleurs";
+            const shareDescription = "J'ai partagé mes émotions sur Rainbow Mood, rejoignez-moi pour créer un drapeau d'émotions coloré !";
+            const shareUrl = window.location.href;
+            
+            // X (anciennement Twitter)
+            document.getElementById('x-share').addEventListener('click', function() {
+                const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(shareDescription)}&url=${encodeURIComponent(shareUrl)}`;
+                window.open(xUrl, '_blank');
+            });
+            
+            // Facebook
+            document.getElementById('facebook-share').addEventListener('click', function() {
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+                window.open(facebookUrl, '_blank');
+            });
+            
+            // Instagram
+            document.getElementById('instagram-share').addEventListener('click', function() {
+                alert("Pour partager sur Instagram :\n1. Prenez une capture d'écran de l'application\n2. Ouvrez Instagram\n3. Créez une nouvelle publication ou story\n4. Ajoutez la capture d'écran\n5. Ajoutez le lien dans votre bio ou votre story si vous avez plus de 10 000 abonnés");
+                
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    window.location.href = "instagram://camera";
+                } else {
+                    window.open("https://www.instagram.com", "_blank");
+                }
+            });
+            
+            // WhatsApp
+            document.getElementById('whatsapp-share').addEventListener('click', function() {
+                const whatsappText = `${shareDescription} ${shareUrl}`;
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+            
+            // LinkedIn
+            document.getElementById('linkedin-share').addEventListener('click', function() {
+                const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+                window.open(linkedinUrl, '_blank');
+            });
+            
+            // Email
+            document.getElementById('email-share').addEventListener('click', function() {
+                const subject = shareTitle;
+                const body = `${shareDescription}\n\n${shareUrl}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            });
+            
+            // Copier le lien
+            document.getElementById('copy-link').addEventListener('click', function() {
+                navigator.clipboard.writeText(shareUrl).then(function() {
+                    // Feedback visuel temporaire
+                    const button = document.getElementById('copy-link');
+                    const originalHTML = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(function() {
+                        button.innerHTML = originalHTML;
+                    }, 2000);
+                    alert("Lien copié dans le presse-papier !");
+                });
+            });
+        }
+
+        // Initialisation des éléments liés aux chansons
+        songColorSelect.addEventListener('change', function() {
+            addSongEmotionButton.style.backgroundColor = songColorSelect.value;
+        });
+        addSongEmotionButton.style.backgroundColor = songColorSelect.value;
+
+        // Charger les chansons et les émotions
+        loadSongs();
+        loadSongEmotions();
+        
+        // Initialiser le partage social
+        setupSocialSharing();
+        
+        console.log("Application initialisée");
+    </script>
+</body>
+</html>
