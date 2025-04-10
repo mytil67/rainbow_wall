@@ -1,0 +1,3632 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Aura Musicale - Rainbow Mood</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Meta tags pour les réseaux sociaux -->
+    <meta property="og:title" content="Quiz Aura Musicale - Découvrez votre personnalité sonore">
+    <meta property="og:description" content="Faites le quiz et découvrez votre aura musicale unique avec la chorale.">
+    <meta property="og:image" content="https://rainbow.singlees.org/logo_singlees.png">
+    <meta property="og:url" content="https://rainbow.singlees.org/quiz.html">
+    <meta property="og:type" content="website">
+
+    <!-- Meta tags spécifiques à Twitter/X -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Quiz Aura Musicale - Découvrez votre personnalité sonore">
+    <meta name="twitter:description" content="Faites le quiz et découvrez votre aura musicale unique avec la chorale.">
+    <meta name="twitter:image" content="https://rainbow.singlees.org/logo_singlees.png">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --background: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --shadow: rgba(0, 0, 0, 0.1);
+            --music-color-red: #FF3D55;
+            --music-color-blue: #2B5EF6;
+            --music-color-violet: #8B31FF;
+            --music-color-green: #25D366;
+            --music-color-yellow: #FFDD00;
+            --music-color-orange: #FF5722;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Arrière-plan dynamique */
+        @keyframes gradientBackground {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBackground 15s ease infinite;
+            color: #1e293b;
+            min-height: 100vh;
+            padding: 2rem;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Améliorations des cartes glass */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.25);
+        }
+
+        /* Logo */
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            border-radius: 50%;
+            transition: transform 0.3s ease;
+            outline: none;
+            border: none;
+        }
+
+        .logo:focus {
+            outline: none;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        /* Structure en deux colonnes */
+        .two-column-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            width: 100%;
+        }
+
+        .quiz-section {
+            height: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Styles pour les boutons */
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+            margin-top: 0.5rem;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Styles pour le quiz */
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .quiz-question {
+            margin-bottom: 1rem;
+        }
+
+        .quiz-question h3 {
+            margin-bottom: 0.8rem;
+            color: #334155;
+            font-size: 1.2rem;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .quiz-option {
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .quiz-option:hover {
+            background: rgba(255, 255, 255, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .quiz-option.selected {
+            border-color: #6366f1;
+            background: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+        }
+
+        .start-quiz {
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .start-quiz h2 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+        }
+
+        .start-quiz p {
+            margin-bottom: 1.5rem;
+            color: #334155;
+        }
+
+        .quiz-progress {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .progress-bar {
+            background: rgba(255, 255, 255, 0.3);
+            height: 8px;
+            border-radius: 4px;
+            width: 100%;
+            margin: 0 1rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #6366f1;
+            height: 100%;
+            width: 0%;
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+
+        /* Styles pour les résultats */
+        .results-container {
+            display: none;
+        }
+
+        .results-title {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #1e293b;
+        }
+
+        .results-description {
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .result-box {
+            margin-bottom: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 0.8rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-box h3 {
+            margin-bottom: 0.5rem;
+            color: #334155;
+        }
+
+        .result-box p {
+            color: #4b5563;
+        }
+
+        /* Animation pour l'aura */
+        .aura-container {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .aura {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            filter: blur(20px);
+            opacity: 0;
+            transition: all 1.5s ease;
+            z-index: 2;
+        }
+
+        @keyframes pulseAura {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+                filter: blur(20px);
+            }
+            
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 30px 5px rgba(255, 255, 255, 0.5);
+                filter: blur(25px);
+            }
+            
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+                filter: blur(20px);
+            }
+        }
+
+        @keyframes rotateAura {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes reverseRotateAura {
+            0% {
+                transform: rotate(360deg);
+            }
+            100% {
+                transform: rotate(0deg);
+            }
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+            25% {
+                transform: translate(10px, -15px) scale(1.1);
+            }
+            50% {
+                transform: translate(-5px, 10px) scale(0.9);
+            }
+            75% {
+                transform: translate(-15px, -5px) scale(1.05);
+            }
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        .aura-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            transition: all 1s ease;
+            z-index: 1;
+        }
+
+        .ring1 {
+            width: 220px;
+            height: 220px;
+            animation: rotateAura 30s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .ring2 {
+            width: 280px;
+            height: 280px;
+            animation: reverseRotateAura 25s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .ring3 {
+            width: 340px;
+            height: 340px;
+            animation: rotateAura 35s linear infinite;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .aura-particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            z-index: 3;
+            animation: floatParticle 8s ease-in-out infinite;
+            filter: blur(1px);
+        }
+        
+        /* Éléments musicaux dans l'aura */
+        .music-note {
+            position: absolute;
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            z-index: 3;
+            animation-duration: 3s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+        
+        @keyframes floatUpNote {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100px) rotate(20deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Visualisation sonore dynamique */
+        .sound-visualization {
+            position: absolute;
+            bottom: -20px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 3px;
+            z-index: 1;
+        }
+        
+        .sound-bar {
+            width: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            transition: height 0.2s ease;
+        }
+        
+        /* Pulsations dynamiques pour l'aura */
+        .pulse-circle {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transform: scale(0);
+            opacity: 0.7;
+        }
+        
+        @keyframes pulsate {
+            0% {
+                transform: scale(0);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        /* Styles pour les boutons de partage */
+        .social-share-bar {
+            position: fixed;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            z-index: 100;
+        }
+        
+        .social-share-button {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+            font-size: 1.2rem;
+        }
+        
+        .social-share-button:hover {
+            transform: translateY(-5px) scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .x-button {
+            background-color: #000000;
+        }
+        
+        .facebook-button {
+            background-color: #4267B2;
+        }
+        
+        .instagram-button {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+        }
+        
+        .whatsapp-button {
+            background-color: #25D366;
+        }
+        
+        .linkedin-button {
+            background-color: #0077B5;
+        }
+        
+        .email-button {
+            background-color: #DB4437;
+        }
+        
+        .preview-button {
+            background-color: #6366f1;
+        }
+        
+        /* Animation pour l'apparition de la barre */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-30px) translateY(-50%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) translateY(-50%);
+            }
+        }
+        
+        .social-share-bar {
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        /* Bouton pour prendre une capture d'écran de l'aura */
+        .screenshot-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            color: #333;
+            padding: 0.5rem;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            z-index: 5;
+        }
+        
+        .screenshot-button:hover {
+            background-color: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
+        }
+
+        /* Styles pour la navigation entre les pages */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .back-to-home {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .back-to-home:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Adaptation pour mobile */
+        @media (max-width: 992px) {
+            .two-column-container {
+                grid-template-columns: 1fr;
+            }
+            
+            body {
+                padding: 1rem;
+            }
+            
+            .aura-container {
+                height: 300px;
+            }
+            
+            .social-share-bar {
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                top: auto;
+                width: 100%;
+                flex-direction: row;
+                justify-content: center;
+                transform: translateY(0);
+                background-color: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(5px);
+                padding: 0.8rem 0;
+                box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+                animation: none;
+                gap: 0.5rem;
+            }
+            
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+                to {
+                    transform: translateY(0);
+                }
+            }
+            
+            .social-share-bar {
+                animation: slideUp 0.5s ease forwards;
+            }
+			/* Styles pour la carte de partage dans la colonne de droite */
+.share-card {
+    margin-top: 2rem;
+    background: rgba(255, 255, 255, 0.3) !important;
+    backdrop-filter: blur(5px) !important;
+    -webkit-backdrop-filter: blur(5px) !important;
+    border-radius: 1rem !important;
+    padding: 1.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    transition: all 0.3s ease;
+}
+
+/* Amélioration de l'apparence des boutons de partage */
+.share-platforms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.share-platform-card {
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.share-platform-card:hover {
+    transform: translateY(-5px);
+}
+
+.social-share-button {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Style pour le bouton de prévisualisation */
+#preview-share-image-main {
+    background: linear-gradient(135deg, var(--primary-color), #8e92fa);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+#preview-share-image-main:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
+}
+
+#preview-share-image-main i {
+    font-size: 1.1em;
+}
+
+/* Optimisation pour les mobiles */
+@media (max-width: 992px) {
+    .share-card {
+        margin-top: 1.5rem;
+        padding: 1rem !important;
+    }
+    
+    .share-platforms {
+        gap: 0.8rem;
+        justify-content: space-around;
+    }
+    
+    .social-share-button {
+        width: 4rem !important;
+        height: 4rem !important;
+    }
+}
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="dashboard">
+            <header>
+                <div class="logo-container">
+                    <img src="logo_singlees.png" alt="Logo de la Chorale" class="logo">
+                </div>
+                <div>
+                    <h1>Quiz Aura Musicale</h1>
+                    <p class="subtitle">Découvrez votre personnalité sonore</p>
+                </div>
+            </header>
+            
+            <div class="two-column-container">
+                <!-- Colonne de gauche: Questions du quiz et résultats -->
+                <section class="glass-card quiz-section">
+                    <!-- Intro du quiz -->
+                    <div id="quiz-intro" class="start-quiz">
+                        <h2>Découvrez votre aura musicale unique</h2>
+                        <p>Ce quiz vous aidera à découvrir votre personnalité musicale et à visualiser l'aura sonore qui vous représente. Répondez aux questions pour révéler les couleurs qui résonnent avec votre âme musicale.</p>
+                        <button id="start-quiz-btn" class="btn-start">Commencer le quiz</button>
+                    </div>
+                    
+                    <!-- Container pour les questions du quiz -->
+                    <div id="quiz-container" class="quiz-container" style="display: none;">
+                        <div class="quiz-progress">
+                            <span id="question-counter">Question 1/7</span>
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Les questions seront insérées ici par JavaScript -->
+                    </div>
+                    
+                    <!-- Container pour les résultats -->
+                    <div id="results-container" class="results-container">
+                        <h2 class="results-title">Votre Aura Musicale</h2>
+                        <div id="result-description" class="results-description">
+                            <!-- Description de l'aura sera insérée ici -->
+                        </div>
+                        
+                        <div class="result-box">
+                            <h3>Votre personnalité musicale</h3>
+                            <p id="personality-result"></p>
+                        </div>
+                        
+                        <div class="result-box">
+                            <h3>Votre ambiance idéale</h3>
+                            <p id="ambiance-result"></p>
+                        </div>
+                        
+                        <div class="result-box">
+                            <h3>Votre expression créative</h3>
+                            <p id="creative-result"></p>
+                        </div>
+                        
+                        <button id="retake-quiz-btn">Refaire le quiz</button>
+                        
+                        
+                    </div>
+                </section>
+                
+                <!-- Colonne de droite: Visualisation de l'aura et options de partage -->
+    <section class="glass-card">
+        <div id="aura-visualization" class="aura-container">
+            <div id="main-aura" class="aura"></div>
+            <div id="ring1" class="aura-ring ring1"></div>
+            <div id="ring2" class="aura-ring ring2"></div>
+            <div id="ring3" class="aura-ring ring3"></div>
+            <!-- Les particules et notes de musique seront générées par JavaScript -->
+            <div id="sound-visualization" class="sound-visualization">
+                <!-- Les barres sonores seront générées par JavaScript -->
+            </div>
+            
+            <button class="screenshot-button" id="screenshot-btn" title="Prendre une capture d'écran" style="display: none;">
+                <i class="fas fa-camera"></i>
+            </button>
+            
+            <!-- Contrôles interactifs pour l'aura -->
+            <div id="aura-controls" style="position: absolute; bottom: 10px; right: 10px; display: none; z-index: 10;">
+                <button id="play-music-btn" title="Jouer/Pause" style="width: 40px; height: 40px; border-radius: 50%; padding: 0; margin: 0 5px;">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="customize-aura-btn" title="Personnaliser" style="width: 40px; height: 40px; border-radius: 50%; padding: 0; margin: 0 5px;">
+                    <i class="fas fa-palette"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Carte de partage déplacée ici, après la visualisation de l'aura -->
+        <div class="share-card" style="margin-top: 1.5rem; display: none;" id="share-options-card">
+            <h3 style="margin-bottom: 1rem; text-align: center;">Partagez votre aura musicale</h3>
+            
+            <div class="share-preview" style="margin-bottom: 1.5rem; text-align: center;">
+                <p>Votre image de partage est prête ! Prévisualisez-la ou partagez-la directement.</p>
+                <button id="preview-share-image-main" class="btn-primary" style="margin-top: 0.8rem;">
+                    <i class="fas fa-eye"></i> Prévisualiser mon image
+                </button>
+            </div>
+            
+            <div class="share-platforms" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+                <div class="share-platform-card" style="text-align: center;">
+                    <button class="social-share-button instagram-button" id="instagram-share" style="width: 5rem; height: 5rem; margin-bottom: 0.5rem;">
+                        <i class="fab fa-instagram fa-2x"></i>
+                    </button>
+                    <p style="font-size: 0.9rem;">Instagram</p>
+                </div>
+                
+                <div class="share-platform-card" style="text-align: center;">
+                    <button class="social-share-button facebook-button" id="facebook-share" style="width: 5rem; height: 5rem; margin-bottom: 0.5rem;">
+                        <i class="fab fa-facebook-f fa-2x"></i>
+                    </button>
+                    <p style="font-size: 0.9rem;">Facebook</p>
+                </div>
+                
+                <div class="share-platform-card" style="text-align: center;">
+                    <button class="social-share-button x-button" id="x-share" style="width: 5rem; height: 5rem; margin-bottom: 0.5rem;">
+                        <i class="fab fa-x-twitter fa-2x"></i>
+                    </button>
+                    <p style="font-size: 0.9rem;">X / Twitter</p>
+                </div>
+                
+                <div class="share-platform-card" style="text-align: center;">
+                    <button class="social-share-button whatsapp-button" id="whatsapp-share" style="width: 5rem; height: 5rem; margin-bottom: 0.5rem;">
+                        <i class="fab fa-whatsapp fa-2x"></i>
+                    </button>
+                    <p style="font-size: 0.9rem;">WhatsApp</p>
+                </div>
+            </div>
+            
+            <p style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                Chaque plateforme reçoit une image optimisée pour le meilleur affichage possible.
+            </p>
+        </div>
+    </section>
+</div>
+            
+            <div class="nav-buttons">
+                <a href="index.html" class="back-to-home">
+                    <i class="fas fa-arrow-left"></i> Retour à Rainbow Mood
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Barre de partage sur les réseaux sociaux (masquée jusqu'aux résultats) -->
+    <div class="social-share-bar" style="display: none;">
+        <button class="social-share-button x-button" id="x-share" title="Partager sur X">
+            <i class="fab fa-x-twitter"></i>
+        </button>
+        <button class="social-share-button facebook-button" id="facebook-share" title="Partager sur Facebook">
+            <i class="fab fa-facebook-f"></i>
+        </button>
+        <button class="social-share-button instagram-button" id="instagram-share" title="Partager sur Instagram">
+            <i class="fab fa-instagram"></i>
+        </button>
+        <button class="social-share-button whatsapp-button" id="whatsapp-share" title="Partager sur WhatsApp">
+            <i class="fab fa-whatsapp"></i>
+        </button>
+        <button class="social-share-button linkedin-button" id="linkedin-share" title="Partager sur LinkedIn">
+            <i class="fab fa-linkedin-in"></i>
+        </button>
+        <button class="social-share-button email-button" id="email-share" title="Partager par email">
+            <i class="fas fa-envelope"></i>
+        </button>
+    </div>
+
+    <script>
+        // Initialiser les interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Préparer l'interface pour commencer le quiz
+            resetAura();
+            
+            // Initialiser les effets dynamiques
+            initDynamicEffects();
+            
+            // Easter egg: réaction à un double-clic sur le logo
+            const logo = document.querySelector('.logo');
+            if (logo) {
+                logo.addEventListener('dblclick', function() {
+                    triggerLogoAnimation();
+                });
+            }
+        });
+        
+        // Easter egg: Animation du logo
+        function triggerLogoAnimation() {
+            const logo = document.querySelector('.logo');
+            
+            // Ajouter une classe pour l'animation
+            logo.classList.add('logo-pulse');
+            
+            // Style temporaire pour l'animation
+            logo.style.animation = 'pulseAura 1s ease-in-out';
+            logo.style.filter = 'hue-rotate(360deg) brightness(1.2)';
+            logo.style.transform = 'scale(1.2) rotate(360deg)';
+            logo.style.transition = 'all 1s ease-in-out';
+            
+            // Afficher un message secret
+            const secretMessage = document.createElement('div');
+            secretMessage.textContent = "✨ Vous avez découvert un secret musical! ✨";
+            secretMessage.style.position = 'fixed';
+            secretMessage.style.top = '20px';
+            secretMessage.style.left = '50%';
+            secretMessage.style.transform = 'translateX(-50%)';
+            secretMessage.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            secretMessage.style.padding = '10px 20px';
+            secretMessage.style.borderRadius = '20px';
+            secretMessage.style.boxShadow = '0 0 20px rgba(99, 102, 241, 0.5)';
+            secretMessage.style.zIndex = '9999';
+            secretMessage.style.opacity = '0';
+            secretMessage.style.transition = 'opacity 0.5s ease';
+            
+            document.body.appendChild(secretMessage);
+            
+            // Afficher progressivement le message
+            setTimeout(() => {
+                secretMessage.style.opacity = '1';
+            }, 100);
+            
+            // Réinitialiser après l'animation
+            setTimeout(() => {
+                logo.style.animation = '';
+                logo.style.filter = '';
+                logo.style.transform = '';
+                
+                // Faire disparaître le message
+                secretMessage.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(secretMessage);
+                }, 500);
+            }, 3000);
+            
+            // Créer des particules musicales autour du logo
+            createExplosionParticles(logo);
+        }
+        
+        // Créer des particules d'explosion pour l'easter egg
+        function createExplosionParticles(element) {
+            // Position de l'élément
+            const rect = element.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            // Symboles de notes de musique
+            const noteSymbols = ['♪', '♫', '♬', '♩', '♭', '♮', '♯'];
+            
+            // Créer 20 particules
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.zIndex = '9999';
+                particle.style.left = `${centerX}px`;
+                particle.style.top = `${centerY}px`;
+                particle.style.fontSize = `${Math.random() * 20 + 10}px`;
+                particle.style.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                particle.style.textShadow = '0 0 5px white';
+                particle.style.opacity = '1';
+                particle.style.transition = 'all 1.5s ease-out';
+                
+                // Choisir un symbole musical aléatoire
+                particle.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+                
+                document.body.appendChild(particle);
+                
+                // Animation de déplacement
+                setTimeout(() => {
+                    // Direction aléatoire
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = 100 + Math.random() * 100;
+                    const x = Math.cos(angle) * distance;
+                    const y = Math.sin(angle) * distance;
+                    
+                    particle.style.transform = `translate(${x}px, ${y}px) rotate(${Math.random() * 360}deg)`;
+                    particle.style.opacity = '0';
+                }, 10);
+                
+                // Supprimer après l'animation
+                setTimeout(() => {
+                    document.body.removeChild(particle);
+                }, 1500);
+            }
+        }
+        
+        // Questions du quiz
+        const quizQuestions = [
+            {
+                question: "Comment décririez-vous votre humeur habituelle ?",
+                options: [
+                    "Énergique et enthousiaste",
+                    "Calme et réfléchi(e)",
+                    "Mélancolique et rêveur(se)",
+                    "Joyeux(se) et optimiste"
+                ]
+            },
+            {
+                question: "Quel genre musical vous touche le plus ?",
+                options: [
+                    "Pop/Rock - J'aime les mélodies et rythmes entraînants",
+                    "Classique/Jazz - J'apprécie la complexité et la richesse",
+                    "Hip-hop/Électro - J'adore les beats et les innovations sonores",
+                    "Folk/Acoustique - J'aime les sonorités authentiques et chaleureuses"
+                ]
+            },
+            {
+                question: "Quelle couleur vous attire le plus ?",
+                options: [
+                    "Rouge/Orange - Couleurs chaleureuses et énergiques",
+                    "Bleu/Vert - Couleurs apaisantes et naturelles",
+                    "Violet/Indigo - Couleurs mystérieuses et profondes",
+                    "Jaune/Rose - Couleurs joyeuses et optimistes"
+                ]
+            },
+            {
+                question: "Quand écoutez-vous le plus souvent de la musique ?",
+                options: [
+                    "En faisant du sport ou en dansant",
+                    "En me relaxant ou en méditant",
+                    "En travaillant ou en étudiant",
+                    "En passant du temps avec des amis"
+                ]
+            },
+            {
+                question: "Comment réagissez-vous face à une nouvelle chanson ?",
+                options: [
+                    "Je me concentre d'abord sur le rythme et les beats",
+                    "J'écoute attentivement les paroles et leur signification",
+                    "Je suis sensible à l'atmosphère générale et aux émotions",
+                    "J'analyse la structure musicale et les instruments"
+                ]
+            },
+            {
+                question: "Quel instrument vous fascine le plus ?",
+                options: [
+                    "La batterie ou les percussions",
+                    "La guitare ou le piano",
+                    "La voix humaine",
+                    "Les instruments électroniques ou synthétiseurs"
+                ]
+            },
+            {
+                question: "Si votre vie avait une bande-son, ce serait plutôt...",
+                options: [
+                    "Un album énergique plein de rebondissements",
+                    "Une composition harmonieuse et équilibrée",
+                    "Une œuvre expérimentale aux ambiances changeantes",
+                    "Une playlist joyeuse et inspirante"
+                ]
+            }
+        ];
+        
+        // Profils musicaux possibles
+        const musicalProfiles = [
+            {
+                name: "Aura Rouge Dynamique",
+                description: "Votre aura musicale vibre d'une énergie rouge dynamique ! Vous êtes attiré(e) par des rythmes entraînants et des mélodies qui donnent envie de bouger. La musique est pour vous une source d'énergie et de motivation.",
+                personality: "Vous êtes une personne énergique qui aime l'action et le mouvement. La musique vous aide à vous dépasser et à exprimer votre enthousiasme. Vous êtes probablement extraverti(e) et vous adorez partager votre passion musicale avec votre entourage.",
+                ambiance: "Les festivals, concerts animés et environnements vibrants où la musique pulse à travers l'espace. Vous vous épanouissez dans des ambiances où l'énergie circule librement.",
+                creative: "Vous exprimez votre créativité par le mouvement et l'action. Le rythme guide votre expression et vous avez peut-être un talent pour la danse ou les performances énergiques.",
+                color: "#FF3D55",
+                secondaryColor: "#FF9100"
+            },
+            {
+                name: "Aura Bleue Harmonieuse",
+                description: "Votre aura musicale rayonne d'un bleu apaisant et profond. Vous êtes sensible aux harmonies complexes et aux compositions qui racontent une histoire. La musique est pour vous un refuge et une source de sérénité.",
+                personality: "Réfléchi(e) et intuitif(ve), vous appréciez la profondeur dans la musique comme dans la vie. Vous êtes attentif(ve) aux détails et possédez une sensibilité artistique développée qui vous permet de percevoir les subtilités musicales que d'autres pourraient manquer.",
+                ambiance: "Les espaces intimes où vous pouvez vous immerger complètement dans l'expérience musicale. Une pièce calme avec une acoustique parfaite ou un concert dans un petit lieu où vous pouvez observer les musiciens de près.",
+                creative: "Votre créativité s'exprime à travers une appréciation contemplative et une analyse fine des œuvres musicales. Vous pourriez être attiré(e) par la composition ou l'interprétation d'œuvres qui expriment des émotions complexes.",
+                color: "#2B5EF6",
+                secondaryColor: "#00E0FF"
+            },
+            {
+                name: "Aura Violette Mystique",
+                description: "Votre aura musicale scintille d'un violet mystique et profond. Vous êtes attiré(e) par les sons uniques, les expérimentations sonores et les compositions qui sortent des sentiers battus.",
+                personality: "Vous avez une personnalité créative et indépendante. Les conventions ne vous intéressent pas et vous cherchez constamment à explorer de nouveaux territoires musicaux. Votre écoute est curieuse et ouverte aux influences diverses.",
+                ambiance: "Les environnements artistiques alternatifs, où la musique se mêle à d'autres formes d'art. Vous appréciez les lieux qui stimulent votre imagination et permettent de découvrir des sons innovants.",
+                creative: "Votre expression créative est souvent avant-gardiste et non conventionnelle. Vous pourriez être attiré(e) par la création de nouvelles sonorités ou par la fusion de styles musicaux différents.",
+                color: "#8B31FF",
+                secondaryColor: "#D568F5"
+            },
+            {
+                name: "Aura Verte Naturelle",
+                description: "Votre aura musicale rayonne d'un vert apaisant et organique. Vous êtes en harmonie avec les sons naturels et les compositions qui évoquent des paysages et des émotions authentiques.",
+                personality: "Équilibré(e) et proche de la nature, vous recherchez l'authenticité dans la musique. Vous êtes sensible aux émotions véhiculées par les artistes et vous appréciez les performances qui viennent du cœur.",
+                ambiance: "Les espaces ouverts, près de la nature, où la musique peut résonner librement. Un concert acoustique en plein air ou une session d'écoute dans un espace naturel correspond parfaitement à votre sensibilité.",
+                creative: "Votre créativité est ancrée dans l'authenticité et l'expression sincère. Vous pourriez être attiré(e) par les instruments acoustiques ou par des compositions qui racontent des histoires personnelles et vraies.",
+                color: "#25D366",
+                secondaryColor: "#7BFF8B"
+            },
+            {
+                name: "Aura Jaune Radieuse",
+                description: "Votre aura musicale brille d'un jaune éclatant et joyeux. Vous êtes attiré(e) par les mélodies lumineuses et les compositions qui célèbrent la vie et le bonheur.",
+                personality: "Positif(ve) et sociable, vous voyez la musique comme un moyen de célébrer la vie. Votre approche joyeuse de la musique reflète votre optimisme naturel et votre capacité à trouver du plaisir dans les petites choses.",
+                ambiance: "Les environnements festifs et collectifs où la musique rassemble les gens. Vous vous épanouissez dans les ambiances où la joie et le partage sont au centre de l'expérience musicale.",
+                creative: "Votre expression créative est marquée par la légèreté et la joie. Vous pourriez être attiré(e) par les mélodies entraînantes et les performances qui font sourire et danser les gens.",
+                color: "#FFDD00",
+                secondaryColor: "#FFA726"
+            },
+            {
+                name: "Aura Orange Créative",
+                description: "Votre aura musicale flamboie d'une teinte orange vibrante et inspirante. Vous êtes passionné(e) par les expressions musicales énergiques qui stimulent votre créativité et votre imagination.",
+                personality: "Créatif(ve) et passionné(e), vous abordez la musique comme une forme d'expression personnelle. Votre enthousiasme est contagieux et vous aimez partager vos découvertes musicales avec votre entourage.",
+                ambiance: "Les environnements artistiques dynamiques et colorés où la musique s'accompagne d'autres formes d'expression créative. Vous vous épanouissez dans les lieux où l'innovation et l'originalité sont valorisées.",
+                creative: "Votre créativité s'exprime à travers une approche audacieuse et innovante. Vous pourriez être attiré(e) par la fusion des genres ou par la création de nouvelles formes d'expression musicale.",
+                color: "#FF5722",
+                secondaryColor: "#FFAB40"
+            }
+        ];
+        
+        // Variables globales
+        let currentQuestion = 0;
+        let answers = [];
+        let userProfile = null;
+        
+        // Éléments DOM
+        const quizIntro = document.getElementById('quiz-intro');
+        const quizContainer = document.getElementById('quiz-container');
+        const resultsContainer = document.getElementById('results-container');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const retakeQuizBtn = document.getElementById('retake-quiz-btn');
+        const questionCounter = document.getElementById('question-counter');
+        const progressFill = document.getElementById('progress-fill');
+        const auraVisualization = document.getElementById('aura-visualization');
+        const mainAura = document.getElementById('main-aura');
+        const ring1 = document.getElementById('ring1');
+        const ring2 = document.getElementById('ring2');
+        const ring3 = document.getElementById('ring3');
+        const screenshotBtn = document.getElementById('screenshot-btn');
+        const socialShareBar = document.querySelector('.social-share-bar');
+        
+        // Commencer le quiz
+        startQuizBtn.addEventListener('click', startQuiz);
+        retakeQuizBtn.addEventListener('click', restartQuiz);
+        
+        function startQuiz() {
+            quizIntro.style.display = 'none';
+            quizContainer.style.display = 'block';
+            loadQuestion(0);
+        }
+        
+        function restartQuiz() {
+            currentQuestion = 0;
+            answers = [];
+            userProfile = null;
+            
+            // Réinitialiser l'aura
+            resetAura();
+            
+            // Masquer les boutons de partage et capture d'écran
+            socialShareBar.style.display = 'none';
+            screenshotBtn.style.display = 'none';
+            
+            // Masquer la carte des options de partage
+            if(document.getElementById('share-options-card')) {
+                document.getElementById('share-options-card').style.display = 'none';
+            }
+            
+            // Revenir au quiz
+            resultsContainer.style.display = 'none';
+            quizContainer.style.display = 'block';
+            loadQuestion(0);
+        }
+        
+        function resetAura() {
+            mainAura.style.opacity = '0';
+            mainAura.style.background = '';
+            ring1.style.opacity = '0';
+            ring2.style.opacity = '0';
+            ring3.style.opacity = '0';
+            
+            // Supprimer toutes les particules
+            const particles = document.querySelectorAll('.aura-particle');
+            particles.forEach(particle => particle.remove());
+            
+            // Supprimer les notes de musique
+            const notes = document.querySelectorAll('.music-note');
+            notes.forEach(note => note.remove());
+            
+            // Réinitialiser la visualisation sonore
+            const soundVisualization = document.getElementById('sound-visualization');
+            if (soundVisualization) {
+                soundVisualization.innerHTML = '';
+            }
+            
+            // Arrêter les intervalles existants
+            if (window.pulsationInterval) {
+                clearInterval(window.pulsationInterval);
+            }
+            
+            if (window.equalizerInterval) {
+                clearInterval(window.equalizerInterval);
+            }
+        }
+        
+        // Charger une question
+        function loadQuestion(index) {
+            if (index >= quizQuestions.length) {
+                showResults();
+                return;
+            }
+            
+            const question = quizQuestions[index];
+            questionCounter.textContent = `Question ${index + 1}/${quizQuestions.length}`;
+            progressFill.style.width = `${((index + 1) / quizQuestions.length) * 100}%`;
+            
+            // Créer le HTML pour la question
+            let questionHTML = `
+                <div class="quiz-question">
+                    <h3>${question.question}</h3>
+                    <div class="quiz-options">
+            `;
+            
+            // Ajouter les options
+            question.options.forEach((option, optionIndex) => {
+                questionHTML += `
+                    <div class="quiz-option" data-index="${optionIndex}">
+                        ${option}
+                    </div>
+                `;
+            });
+            
+            questionHTML += `
+                    </div>
+                </div>
+                <button id="next-question" style="display: none;">Question suivante</button>
+            `;
+            
+            quizContainer.innerHTML = questionHTML;
+            
+            // Ajouter les événements aux options
+            const options = document.querySelectorAll('.quiz-option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Désélectionner toutes les options
+                    options.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Sélectionner cette option
+                    this.classList.add('selected');
+                    
+                    // Afficher le bouton suivant
+                    document.getElementById('next-question').style.display = 'block';
+                });
+            });
+            
+            // Événement pour le bouton suivant
+            document.getElementById('next-question').addEventListener('click', function() {
+                const selectedOption = document.querySelector('.quiz-option.selected');
+                if (selectedOption) {
+                    const optionIndex = parseInt(selectedOption.dataset.index);
+                    answers[currentQuestion] = optionIndex;
+                    currentQuestion++;
+                    loadQuestion(currentQuestion);
+                } else {
+                    alert("Veuillez sélectionner une option avant de continuer.");
+                }
+            });
+        }
+        
+        // Afficher les résultats
+        function showResults() {
+            // Calculer le profil en fonction des réponses
+            userProfile = calculateUserProfile();
+            
+            // Mettre à jour l'interface avec les résultats
+            document.querySelector('.results-title').textContent = userProfile.name;
+            document.getElementById('result-description').textContent = userProfile.description;
+            document.getElementById('personality-result').textContent = userProfile.personality;
+            document.getElementById('ambiance-result').textContent = userProfile.ambiance;
+            document.getElementById('creative-result').textContent = userProfile.creative;
+            
+            // Afficher l'aura personnalisée
+            visualizeAura(userProfile);
+            
+            // Initialiser les contrôles interactifs
+            initAuraControls();
+            
+            // Afficher les boutons de partage et de capture d'écran
+            socialShareBar.style.display = 'flex';
+            screenshotBtn.style.display = 'block';
+            document.getElementById('aura-controls').style.display = 'flex';
+            
+            // Afficher le panneau d'options de partage amélioré
+            if(document.getElementById('share-options-card')) {
+                document.getElementById('share-options-card').style.display = 'block';
+            }
+            
+            // Cacher le quiz et afficher les résultats
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            
+            // Configurer les boutons de partage
+            setupSocialSharing(userProfile);
+            
+            // Initialiser le partage d'images
+            initSocialImageSharing();
+            
+            // Générer une image en arrière-plan pour accélérer le partage ultérieur
+            generateSocialShareImage(userProfile, 'instagram').then(imageData => {
+                // Stocker l'URL pour un accès rapide
+                window.defaultShareImageUrl = imageData.url;
+                
+                // Configurer le bouton de prévisualisation principal
+                if(document.getElementById('preview-share-image-main')) {
+                    document.getElementById('preview-share-image-main').addEventListener('click', function() {
+                        createImagePreviewModal(window.defaultShareImageUrl, 'instagram');
+                    });
+                }
+            }).catch(error => {
+                console.error("Erreur lors de la génération de l'image en arrière-plan:", error);
+            });
+            
+            // Animer l'apparition des résultats
+            animateResultsAppearance();
+        }
+        
+        // Animation d'apparition des résultats
+        function animateResultsAppearance() {
+            // Animer les boîtes de résultats une par une
+            const resultBoxes = document.querySelectorAll('.result-box');
+            
+            resultBoxes.forEach((box, index) => {
+                // État initial
+                box.style.opacity = '0';
+                box.style.transform = 'translateY(20px)';
+                box.style.transition = 'all 0.5s ease';
+                
+                // Animer avec délai progressif
+                setTimeout(() => {
+                    box.style.opacity = '1';
+                    box.style.transform = 'translateY(0)';
+                }, 300 + index * 200);
+            });
+            
+            // Animer le titre et la description
+            const title = document.querySelector('.results-title');
+            const description = document.getElementById('result-description');
+            
+            title.style.opacity = '0';
+            title.style.transform = 'translateY(-20px)';
+            title.style.transition = 'all 0.5s ease';
+            
+            description.style.opacity = '0';
+            description.style.transition = 'all 0.5s ease 0.2s';
+            
+            setTimeout(() => {
+                title.style.opacity = '1';
+                title.style.transform = 'translateY(0)';
+                
+                setTimeout(() => {
+                    description.style.opacity = '1';
+                }, 200);
+            }, 100);
+        }
+        
+        // Calculer le profil de l'utilisateur en fonction des réponses
+        function calculateUserProfile() {
+            // Compteurs pour chaque type de profil
+            const profileScores = {
+                0: 0, // Rouge Dynamique
+                1: 0, // Bleu Harmonieux
+                2: 0, // Violet Mystique
+                3: 0, // Vert Naturel
+                4: 0, // Jaune Radieux
+                5: 0  // Orange Créatif
+            };
+            
+            // Attribution des points en fonction des réponses
+            // Question 1: Humeur
+            profileScores[answers[0] === 0 ? 0 : answers[0] === 1 ? 1 : answers[0] === 2 ? 2 : 4]++;
+            
+            // Question 2: Genre musical
+            profileScores[answers[1] === 0 ? 0 : answers[1] === 1 ? 1 : answers[1] === 2 ? 2 : 3]++;
+            
+            // Question 3: Couleur préférée
+            profileScores[answers[2] === 0 ? 0 : answers[2] === 1 ? 3 : answers[2] === 2 ? 2 : 4]++;
+            
+            // Question 4: Quand écouter
+            profileScores[answers[3] === 0 ? 0 : answers[3] === 1 ? 1 : answers[3] === 2 ? 2 : 4]++;
+            
+            // Question 5: Réaction nouvelle chanson
+            profileScores[answers[4] === 0 ? 0 : answers[4] === 1 ? 3 : answers[4] === 2 ? 2 : 1]++;
+            
+            // Question 6: Instrument
+            profileScores[answers[5] === 0 ? 0 : answers[5] === 1 ? 3 : answers[5] === 2 ? 4 : 2]++;
+            
+            // Question 7: Bande-son
+            profileScores[answers[6] === 0 ? 0 : answers[6] === 1 ? 1 : answers[6] === 2 ? 2 : 4]++;
+            
+            // Trouver le score le plus élevé
+            let maxScore = 0;
+            let maxProfile = 0;
+            
+            for (const [profile, score] of Object.entries(profileScores)) {
+                if (score > maxScore) {
+                    maxScore = score;
+                    maxProfile = parseInt(profile);
+                }
+            }
+            
+            // Cas d'égalité: ajouter un peu d'aléatoire
+            const tiedProfiles = Object.entries(profileScores)
+                .filter(([_, score]) => score === maxScore)
+                .map(([profile, _]) => parseInt(profile));
+                
+            if (tiedProfiles.length > 1) {
+                // Choix aléatoire parmi les profils à égalité
+                maxProfile = tiedProfiles[Math.floor(Math.random() * tiedProfiles.length)];
+            }
+            
+            return musicalProfiles[maxProfile];
+        }
+        
+        // Visualiser l'aura en fonction du profil
+        function visualizeAura(profile) {
+            // Couleurs principales et secondaires
+            const mainColor = profile.color;
+            const secondaryColor = profile.secondaryColor;
+            
+            // Créer un dégradé pour l'aura principale avec effet lumineux plus prononcé
+            mainAura.style.background = `radial-gradient(circle, ${mainColor} 0%, ${secondaryColor} 50%, rgba(255,255,255,0) 70%)`;
+            mainAura.style.boxShadow = `0 0 30px ${mainColor}80, 0 0 60px ${secondaryColor}40`;
+            
+            // Animer les anneaux avec bordures plus brillantes
+            ring1.style.borderColor = `${mainColor}80`; // 50% opacity
+            ring1.style.boxShadow = `0 0 15px ${mainColor}60`;
+            
+            ring2.style.borderColor = `${secondaryColor}80`; // 50% opacity
+            ring2.style.boxShadow = `0 0 15px ${secondaryColor}60`;
+            
+            ring3.style.borderColor = `${mainColor}60`; // 40% opacity
+            ring3.style.boxShadow = `0 0 15px ${mainColor}40`;
+            
+            // Créer des particules aléatoires
+            createParticles(40, mainColor, secondaryColor);
+            
+            // Ajouter des notes de musique flottantes
+            createMusicNotes(15, mainColor, secondaryColor);
+            
+            // Initialiser la visualisation sonore
+            createSoundVisualization(25, mainColor, secondaryColor);
+            
+            // Ajouter des pulsations périodiques
+            startPulsations(mainColor, secondaryColor);
+            
+            // Afficher tous les éléments avec animation séquencée
+            setTimeout(() => {
+                mainAura.style.opacity = '0.8';
+                mainAura.style.animation = 'pulseAura 4s infinite';
+                
+                // Afficher les contrôles après l'animation
+                document.getElementById('aura-controls').style.display = 'flex';
+                
+                setTimeout(() => {
+                    ring1.style.opacity = '0.7';
+                    setTimeout(() => {
+                        ring2.style.opacity = '0.6';
+                        setTimeout(() => {
+                            ring3.style.opacity = '0.5';
+                            
+                            // Animer les particules
+                            const particles = document.querySelectorAll('.aura-particle');
+                            particles.forEach((particle, index) => {
+                                setTimeout(() => {
+                                    particle.style.opacity = '0.8';
+                                }, index * 30);
+                            });
+                            
+                            // Animer les notes de musique
+                            animateMusicNotes();
+                            
+                            // Démarrer l'animation de visualisation sonore
+                            startSoundVisualization();
+                            
+                        }, 300);
+                    }, 300);
+                }, 300);
+            }, 500);
+        }
+        
+        // Créer les particules pour l'aura
+        function createParticles(count, color1, color2) {
+            // Supprimer les particules existantes
+            const existingParticles = document.querySelectorAll('.aura-particle');
+            existingParticles.forEach(particle => particle.remove());
+            
+            for (let i = 0; i < count; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'aura-particle';
+                
+                // Taille aléatoire entre 3 et 12px
+                const size = Math.random() * 9 + 3;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Position aléatoire autour du centre
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 150 + 50;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                particle.style.left = `calc(50% + ${x}px)`;
+                particle.style.top = `calc(50% + ${y}px)`;
+                
+                // Couleur aléatoire entre les deux couleurs du profil avec brillance
+                const useColor = Math.random() > 0.5 ? color1 : color2;
+                particle.style.backgroundColor = useColor;
+                particle.style.boxShadow = `0 0 5px ${useColor}`;
+                
+                // Animation personnalisée pour chaque particule
+                const animationDurationFloat = Math.random() * 5 + 5;
+                const animationDelayFloat = Math.random() * 5;
+                
+                particle.style.animationDuration = `${animationDurationFloat}s`;
+                particle.style.animationDelay = `${animationDelayFloat}s`;
+                
+                // Ajouter au conteneur
+                auraVisualization.appendChild(particle);
+            }
+        }
+        
+        // Créer des notes de musique flottantes
+        function createMusicNotes(count, color1, color2) {
+            // Supprimer les notes existantes
+            const existingNotes = document.querySelectorAll('.music-note');
+            existingNotes.forEach(note => note.remove());
+            
+            // Symboles de notes de musique
+            const noteSymbols = ['♪', '♫', '♬', '♩', '♭', '♮', '♯'];
+            
+            for (let i = 0; i < count; i++) {
+                const noteElement = document.createElement('div');
+                noteElement.className = 'music-note';
+                
+                // Sélectionner un symbole aléatoire
+                const randomSymbol = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+                noteElement.textContent = randomSymbol;
+                
+                // Position aléatoire autour du centre
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 120 + 30;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                noteElement.style.left = `calc(50% + ${x}px)`;
+                noteElement.style.top = `calc(50% + ${y}px)`;
+                
+                // Taille aléatoire entre 16px et 30px
+                const fontSize = Math.floor(Math.random() * 14 + 16);
+                noteElement.style.fontSize = `${fontSize}px`;
+                
+                // Couleur aléatoire
+                const useColor = Math.random() > 0.5 ? color1 : color2;
+                noteElement.style.color = useColor;
+                noteElement.style.textShadow = `0 0 5px ${useColor}`;
+                
+                // Préparation pour l'animation
+                noteElement.dataset.floatDelay = Math.random() * 10;
+                
+                // Ajouter au conteneur
+                auraVisualization.appendChild(noteElement);
+            }
+        }
+        
+        // Animer les notes de musique avec un mouvement flottant vers le haut
+        function animateMusicNotes() {
+            const notes = document.querySelectorAll('.music-note');
+            
+            notes.forEach(note => {
+                // Animation personnalisée pour chaque note
+                note.style.animation = `floatUpNote ${3 + Math.random() * 3}s ease-in-out infinite ${note.dataset.floatDelay}s`;
+                
+                // Afficher progressivement
+                setTimeout(() => {
+                    note.style.opacity = '0.9';
+                }, parseFloat(note.dataset.floatDelay) * 1000);
+            });
+        }
+        
+        // Créer la visualisation sonore (barres d'égaliseur)
+        function createSoundVisualization(count, color1, color2) {
+            const soundVisualization = document.getElementById('sound-visualization');
+            soundVisualization.innerHTML = '';
+            
+            for (let i = 0; i < count; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'sound-bar';
+                
+                // Hauteur initiale aléatoire
+                bar.style.height = `${Math.random() * 20 + 5}px`;
+                
+                // Couleur dégradée
+                const ratio = i / (count - 1);
+                const interpolatedColor = interpolateColor(color1, color2, ratio);
+                bar.style.background = interpolatedColor;
+                bar.style.boxShadow = `0 0 5px ${interpolatedColor}`;
+                
+                soundVisualization.appendChild(bar);
+            }
+        }
+        
+        // Interpoler entre deux couleurs (format hexadécimal)
+        function interpolateColor(color1, color2, ratio) {
+            // Convertir les couleurs hexadécimales en composantes RGB
+            const r1 = parseInt(color1.substring(1, 3), 16);
+            const g1 = parseInt(color1.substring(3, 5), 16);
+            const b1 = parseInt(color1.substring(5, 7), 16);
+            
+            const r2 = parseInt(color2.substring(1, 3), 16);
+            const g2 = parseInt(color2.substring(3, 5), 16);
+            const b2 = parseInt(color2.substring(5, 7), 16);
+            
+            // Interpoler
+            const r = Math.round(r1 + (r2 - r1) * ratio);
+            const g = Math.round(g1 + (g2 - g1) * ratio);
+            const b = Math.round(b1 + (b2 - b1) * ratio);
+            
+            // Convertir en format RGB
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+        
+        // Animer la visualisation sonore
+        function startSoundVisualization() {
+            const bars = document.querySelectorAll('.sound-bar');
+            
+            // Fonction pour mettre à jour les hauteurs de manière aléatoire
+            function updateBars() {
+                bars.forEach(bar => {
+                    const newHeight = Math.random() * 50 + 5;
+                    bar.style.height = `${newHeight}px`;
+                });
+            }
+            
+            // Mettre à jour les barres périodiquement
+            window.equalizerInterval = setInterval(updateBars, 200);
+        }
+        
+        // Créer des pulsations périodiques
+        function startPulsations(color1, color2) {
+            // Fonction pour créer une nouvelle pulsation
+            function createPulse() {
+                const pulse = document.createElement('div');
+                pulse.className = 'pulse-circle';
+                
+                // Taille et position centrée
+                pulse.style.width = '300px';
+                pulse.style.height = '300px';
+                pulse.style.left = 'calc(50% - 150px)';
+                pulse.style.top = 'calc(50% - 150px)';
+                
+                // Couleur alternée
+                const useColor = Math.random() > 0.5 ? color1 : color2;
+                pulse.style.borderColor = useColor;
+                pulse.style.boxShadow = `0 0 10px ${useColor}60`;
+                
+                // Animation
+                pulse.style.animation = 'pulsate 2.5s ease-out';
+                
+                // Ajouter au conteneur
+                auraVisualization.appendChild(pulse);
+                
+                // Supprimer après l'animation
+                setTimeout(() => {
+                    pulse.remove();
+                }, 2500);
+            }
+            
+            // Créer une pulsation périodiquement
+            window.pulsationInterval = setInterval(createPulse, 3000);
+            
+            // Créer la première pulsation immédiatement
+            createPulse();
+        }
+        
+        // Initialiser les contrôles de l'aura après les résultats
+        function initAuraControls() {
+            const playMusicBtn = document.getElementById('play-music-btn');
+            const customizeAuraBtn = document.getElementById('customize-aura-btn');
+            
+            // État de l'animation musicale
+            let isMusicPlaying = false;
+            let musicInterval = null;
+            
+            // Bouton jouer/pause pour l'animation
+            playMusicBtn.addEventListener('click', function() {
+                if (isMusicPlaying) {
+                    // Pause
+                    playMusicBtn.innerHTML = '<i class="fas fa-play"></i>';
+                    isMusicPlaying = false;
+                    
+                    // Arrêter l'animation intense
+                    pauseIntenseAnimation();
+                    
+                    // Arrêter l'intervalle
+                    if (musicInterval) {
+                        clearInterval(musicInterval);
+                        musicInterval = null;
+                    }
+                } else {
+                    // Play
+                    playMusicBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                    isMusicPlaying = true;
+                    
+                    // Démarrer une animation plus intense
+                    startIntenseAnimation();
+                    
+                    // Créer un rythme visuel
+                    musicInterval = setInterval(() => {
+                        pulseToMusic();
+                    }, 500);
+                }
+            });
+            
+            // Bouton de personnalisation
+            customizeAuraBtn.addEventListener('click', openCustomizePanel);
+        }
+        
+        // Lancer une animation plus intense pour l'aura
+        function startIntenseAnimation() {
+            if (!userProfile) return;
+            
+            // Augmenter l'intensité de l'aura principale
+            mainAura.style.filter = 'blur(15px) brightness(1.3)';
+            mainAura.style.animation = 'pulseAura 2s infinite';
+            
+            // Accélérer la rotation des anneaux
+            ring1.style.animationDuration = '15s';
+            ring2.style.animationDuration = '12s';
+            ring3.style.animationDuration = '18s';
+            
+            // Rendre les particules plus brillantes
+            const particles = document.querySelectorAll('.aura-particle');
+            particles.forEach(particle => {
+                particle.style.filter = 'brightness(1.5)';
+                particle.style.animationDuration = `${parseFloat(particle.style.animationDuration) * 0.7}s`;
+            });
+            
+            // Accélérer l'animation des notes de musique
+            const notes = document.querySelectorAll('.music-note');
+            notes.forEach(note => {
+                note.style.filter = 'brightness(1.5)';
+                
+                // Extraire la durée actuelle
+                let currentDuration = note.style.animation.match(/floatUpNote\s+([0-9.]+)s/);
+                if (currentDuration && currentDuration[1]) {
+                    let newDuration = parseFloat(currentDuration[1]) * 0.7;
+                    // Reconstruire la chaîne d'animation
+                    note.style.animation = note.style.animation.replace(
+                        /floatUpNote\s+([0-9.]+)s/, 
+                        `floatUpNote ${newDuration}s`
+                    );
+                }
+            });
+            
+            // Animation plus rapide et plus haute pour l'égaliseur
+            intensifyEqualizer();
+        }
+        
+        // Revenir à l'animation normale
+        function pauseIntenseAnimation() {
+            if (!userProfile) return;
+            
+            // Réinitialiser l'aura principale
+            mainAura.style.filter = 'blur(20px)';
+            mainAura.style.animation = 'pulseAura 4s infinite';
+            
+            // Réinitialiser la rotation des anneaux
+            ring1.style.animationDuration = '30s';
+            ring2.style.animationDuration = '25s';
+            ring3.style.animationDuration = '35s';
+            
+            // Réinitialiser les particules
+            const particles = document.querySelectorAll('.aura-particle');
+            particles.forEach(particle => {
+                particle.style.filter = '';
+                // Réinitialiser la durée d'animation si nécessaire
+            });
+            
+            // Réinitialiser les notes de musique
+            const notes = document.querySelectorAll('.music-note');
+            notes.forEach(note => {
+                note.style.filter = '';
+                // On pourrait réinitialiser l'animation ici si nécessaire
+            });
+            
+            // Réinitialiser l'égaliseur
+            normalizeEqualizer();
+        }
+        
+        // Pulser en rythme avec la "musique"
+        function pulseToMusic() {
+            if (!userProfile) return;
+            
+            // Créer une pulsation temporaire
+            const pulse = document.createElement('div');
+            pulse.className = 'pulse-circle';
+            
+            // Taille et position
+            pulse.style.width = '250px';
+            pulse.style.height = '250px';
+            pulse.style.left = 'calc(50% - 125px)';
+            pulse.style.top = 'calc(50% - 125px)';
+            
+            // Couleur basée sur le profil
+            const useColor = userProfile.color;
+            pulse.style.borderColor = `${useColor}90`;
+            pulse.style.boxShadow = `0 0 15px ${useColor}`;
+            
+            // Animation plus rapide
+            pulse.style.animation = 'pulsate 1s ease-out';
+            
+            // Ajouter au conteneur
+            auraVisualization.appendChild(pulse);
+            
+            // Faire "sauter" les notes et particules
+            const elements = document.querySelectorAll('.aura-particle, .music-note');
+            elements.forEach(element => {
+                // Appliquer une transformation temporaire
+                const originalTransform = element.style.transform;
+                element.style.transform = `${originalTransform || ''} scale(1.2)`;
+                
+                // Revenir à la normale
+                setTimeout(() => {
+                    element.style.transform = originalTransform || '';
+                }, 200);
+            });
+            
+            // Supprimer après l'animation
+            setTimeout(() => {
+                pulse.remove();
+            }, 1000);
+        }
+        
+        // Animation intense pour l'égaliseur
+        function intensifyEqualizer() {
+            const bars = document.querySelectorAll('.sound-bar');
+            
+            // Arrêter l'intervalle précédent
+            if (window.equalizerInterval) {
+                clearInterval(window.equalizerInterval);
+            }
+            
+            // Fonction pour des mouvements plus intenses
+            function updateBarsIntense() {
+                bars.forEach(bar => {
+                    const newHeight = Math.random() * 60 + 10;
+                    bar.style.height = `${newHeight}px`;
+                    
+                    // Ajouter un peu de brillance
+                    bar.style.filter = 'brightness(1.3)';
+                });
+            }
+            
+            // Mettre à jour plus rapidement
+            window.equalizerInterval = setInterval(updateBarsIntense, 100);
+        }
+        
+        // Normaliser l'animation de l'égaliseur
+        function normalizeEqualizer() {
+            if (window.equalizerInterval) {
+                clearInterval(window.equalizerInterval);
+            }
+            
+            const bars = document.querySelectorAll('.sound-bar');
+            bars.forEach(bar => {
+                bar.style.filter = '';
+            });
+            
+            // Reprendre une animation normale
+            window.equalizerInterval = setInterval(() => {
+                bars.forEach(bar => {
+                    const newHeight = Math.random() * 50 + 5;
+                    bar.style.height = `${newHeight}px`;
+                });
+            }, 200);
+        }
+        
+        // Ouvrir le panneau de personnalisation
+        function openCustomizePanel() {
+            if (!userProfile) return;
+            
+            // Vérifier si le panneau existe déjà
+            let customizePanel = document.getElementById('customize-panel');
+            
+            if (customizePanel) {
+                // Si le panneau existe, basculer sa visibilité
+                customizePanel.style.display = customizePanel.style.display === 'none' ? 'block' : 'none';
+                return;
+            }
+            
+            // Créer le panneau de personnalisation
+            customizePanel = document.createElement('div');
+            customizePanel.id = 'customize-panel';
+            customizePanel.style.position = 'absolute';
+            customizePanel.style.top = '50px';
+            customizePanel.style.right = '10px';
+            customizePanel.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            customizePanel.style.padding = '15px';
+            customizePanel.style.borderRadius = '10px';
+            customizePanel.style.boxShadow = '0 0 20px rgba(0, 0, 0, 0.2)';
+            customizePanel.style.zIndex = '20';
+            customizePanel.style.width = '220px';
+            
+            // Ajouter les options de personnalisation
+            customizePanel.innerHTML = `
+                <h4 style="margin-bottom: 10px; color: #333;">Personnaliser votre aura</h4>
+                
+                <div style="margin-bottom: 10px;">
+                    <label for="color-picker" style="display: block; margin-bottom: 5px; color: #555;">Couleur principale:</label>
+                    <input type="color" id="color-picker" value="${userProfile.color}" style="width: 100%;">
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <label for="intensity-slider" style="display: block; margin-bottom: 5px; color: #555;">Intensité:</label>
+                    <input type="range" id="intensity-slider" min="1" max="10" value="5" style="width: 100%;">
+                </div>
+                
+                <div style="margin-bottom: 10px;">
+                    <label for="particles-slider" style="display: block; margin-bottom: 5px; color: #555;">Particules:</label>
+                    <input type="range" id="particles-slider" min="10" max="80" value="40" style="width: 100%;">
+                </div>
+                
+                <div style="text-align: center; margin-top: 15px;">
+                    <button id="apply-customize" style="background-color: #6366f1; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">Appliquer</button>
+                    <button id="reset-customize" style="background-color: #e5e7eb; color: #333; border: none; padding: 8px 15px; border-radius: 5px; margin-left: 5px; cursor: pointer;">Réinitialiser</button>
+                </div>
+            `;
+            
+            // Ajouter au conteneur de l'aura
+            auraVisualization.appendChild(customizePanel);
+            
+            // Gérer les événements
+            document.getElementById('apply-customize').addEventListener('click', applyCustomization);
+            document.getElementById('reset-customize').addEventListener('click', resetCustomization);
+        }
+        
+        // Appliquer la personnalisation
+        function applyCustomization() {
+            const colorPicker = document.getElementById('color-picker');
+            const intensitySlider = document.getElementById('intensity-slider');
+            const particlesSlider = document.getElementById('particles-slider');
+            
+            if (!colorPicker || !intensitySlider || !particlesSlider) return;
+            
+            const newColor = colorPicker.value;
+            const intensity = intensitySlider.value;
+            const particlesCount = parseInt(particlesSlider.value);
+            
+            // Générer une couleur secondaire harmonieuse
+            const hue = parseInt(newColor.substring(1, 3), 16) * 360 / 255;
+            const newSecondaryColor = `hsl(${(hue + 40) % 360}, 80%, 60%)`;
+            
+            // Mettre à jour l'aura
+            mainAura.style.background = `radial-gradient(circle, ${newColor} 0%, ${newSecondaryColor} 50%, rgba(255,255,255,0) 70%)`;
+            mainAura.style.boxShadow = `0 0 ${intensity * 5}px ${newColor}80, 0 0 ${intensity * 10}px ${newSecondaryColor}40`;
+            
+            // Mettre à jour les anneaux
+            ring1.style.borderColor = `${newColor}80`; 
+            ring1.style.boxShadow = `0 0 ${intensity * 2}px ${newColor}60`;
+            
+            ring2.style.borderColor = `${newSecondaryColor}80`;
+            ring2.style.boxShadow = `0 0 ${intensity * 2}px ${newSecondaryColor}60`;
+            
+            ring3.style.borderColor = `${newColor}60`;
+            ring3.style.boxShadow = `0 0 ${intensity * 2}px ${newColor}40`;
+            
+            // Recréer les particules avec la nouvelle couleur
+            createParticles(particlesCount, newColor, newSecondaryColor);
+            
+            // Recréer les notes de musique
+            createMusicNotes(particlesCount / 3, newColor, newSecondaryColor);
+            animateMusicNotes();
+            
+            // Temporairement masquer le panneau
+            document.getElementById('customize-panel').style.display = 'none';
+            
+            // Afficher un message de confirmation
+            const message = document.createElement('div');
+            message.textContent = "Personnalisation appliquée !";
+            message.style.position = 'absolute';
+            message.style.top = '10px';
+            message.style.left = '50%';
+            message.style.transform = 'translateX(-50%)';
+            message.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            message.style.padding = '10px 20px';
+            message.style.borderRadius = '20px';
+            message.style.boxShadow = '0 0 10px rgba(0, 0, 0, 0.2)';
+            message.style.zIndex = '30';
+            
+            auraVisualization.appendChild(message);
+            
+            // Faire disparaître le message après 2 secondes
+            setTimeout(() => {
+                message.style.opacity = '0';
+                message.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    auraVisualization.removeChild(message);
+                }, 500);
+            }, 2000);
+        }
+        
+        // Réinitialiser la personnalisation
+        function resetCustomization() {
+            if (!userProfile) return;
+            
+            // Masquer le panneau
+            document.getElementById('customize-panel').style.display = 'none';
+            
+            // Réinitialiser l'aura avec les couleurs du profil
+            visualizeAura(userProfile);
+        }
+        
+        // Fonctionnalité de capture d'écran
+        screenshotBtn.addEventListener('click', function() {
+            if (!userProfile) return;
+            
+            // Préparer l'aura pour la capture d'écran
+            prepareAuraForScreenshot();
+            
+            // Dans une implémentation réelle, nous utiliserions html2canvas ou une API similaire
+            
+            // Simuler la capture d'écran avec une animation
+            simulateScreenshot();
+        });
+        
+        // Préparer l'aura pour la capture d'écran
+        function prepareAuraForScreenshot() {
+            // Masquer temporairement les contrôles
+            document.getElementById('aura-controls').style.display = 'none';
+            screenshotBtn.style.display = 'none';
+            
+            // Optimiser l'apparence de l'aura (facultatif)
+            mainAura.style.filter = 'blur(20px) brightness(1.2)';
+            
+            // Ajouter une bordure de cadre temporaire
+            auraVisualization.style.border = '2px solid rgba(255, 255, 255, 0.5)';
+            auraVisualization.style.borderRadius = '1rem';
+        }
+        
+        // Simuler une capture d'écran avec animation
+        function simulateScreenshot() {
+            // Créer un flash blanc
+            const flash = document.createElement('div');
+            flash.style.position = 'fixed';
+            flash.style.top = '0';
+            flash.style.left = '0';
+            flash.style.width = '100%';
+            flash.style.height = '100%';
+            flash.style.backgroundColor = 'white';
+            flash.style.opacity = '0';
+            flash.style.transition = 'opacity 0.5s ease';
+            flash.style.zIndex = '9999';
+            
+            document.body.appendChild(flash);
+            
+            // Animation de flash
+            setTimeout(() => {
+                flash.style.opacity = '0.7';
+                
+                setTimeout(() => {
+                    flash.style.opacity = '0';
+                    
+                    // Supprimer après l'animation
+                    setTimeout(() => {
+                        document.body.removeChild(flash);
+                        
+                        // Réafficher les contrôles
+                        document.getElementById('aura-controls').style.display = 'flex';
+                        screenshotBtn.style.display = 'block';
+                        
+                        // Réinitialiser les styles temporaires
+                        auraVisualization.style.border = '';
+                        
+                        // Afficher un message de confirmation
+                        showScreenshotMessage();
+                    }, 500);
+                }, 150);
+            }, 10);
+        }
+        
+        // Afficher un message après la capture d'écran
+        function showScreenshotMessage() {
+            const message = document.createElement('div');
+            message.textContent = "🎵 Capture d'écran de votre aura musicale! 🎵";
+            message.style.position = 'fixed';
+            message.style.top = '50%';
+            message.style.left = '50%';
+            message.style.transform = 'translate(-50%, -50%)';
+            message.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+            message.style.padding = '15px 30px';
+            message.style.borderRadius = '30px';
+            message.style.boxShadow = '0 0 20px rgba(99, 102, 241, 0.5)';
+            message.style.zIndex = '9999';
+            message.style.fontSize = '1.2rem';
+            message.style.fontWeight = '600';
+            message.style.color = '#333';
+            
+            document.body.appendChild(message);
+            
+            // Faire disparaître le message après 2 secondes
+            setTimeout(() => {
+                message.style.opacity = '0';
+                message.style.transition = 'opacity 0.5s ease';
+                
+                setTimeout(() => {
+                    document.body.removeChild(message);
+                }, 500);
+            }, 2000);
+        }
+        
+        // Fonction pour ajouter des effets sonores visuels interactifs
+        function addInteractiveSoundEffects() {
+            const auraContainer = document.getElementById('aura-visualization');
+            
+            // Ajouter un événement de clic pour créer des ondes sonores visuelles
+            auraContainer.addEventListener('click', function(e) {
+                // Ignorer si nous n'avons pas encore de profil
+                if (!userProfile) return;
+                
+                // Calculer la position relative au conteneur
+                const rect = auraContainer.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Créer l'onde sonore
+                createSoundWave(x, y, userProfile.color);
+                
+                // Faire réagir les particules
+                reactParticlesToClick(x, y);
+            });
+        }
+        
+        // Créer une onde sonore visuelle
+        function createSoundWave(x, y, color) {
+            const wave = document.createElement('div');
+            wave.style.position = 'absolute';
+            wave.style.left = `${x}px`;
+            wave.style.top = `${y}px`;
+            wave.style.width = '10px';
+            wave.style.height = '10px';
+            wave.style.borderRadius = '50%';
+            wave.style.backgroundColor = 'transparent';
+            wave.style.border = `2px solid ${color}`;
+            wave.style.transform = 'translate(-50%, -50%) scale(0)';
+            wave.style.opacity = '0.8';
+            wave.style.zIndex = '5';
+            
+            // Ajouter au conteneur
+            auraVisualization.appendChild(wave);
+            
+            // Animation d'expansion
+            let scale = 0;
+            const maxScale = 5 + Math.random() * 3;
+            const interval = setInterval(() => {
+                scale += 0.2;
+                wave.style.transform = `translate(-50%, -50%) scale(${scale})`;
+                wave.style.opacity = Math.max(0, 0.8 - (scale / maxScale) * 0.8);
+                
+                if (scale >= maxScale) {
+                    clearInterval(interval);
+                    wave.remove();
+                }
+            }, 20);
+        }
+        
+        // Faire réagir les particules à un clic
+        function reactParticlesToClick(x, y) {
+            const particles = document.querySelectorAll('.aura-particle, .music-note');
+            
+            particles.forEach(particle => {
+                // Obtenir la position de la particule
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2 - auraVisualization.getBoundingClientRect().left;
+                const particleY = rect.top + rect.height / 2 - auraVisualization.getBoundingClientRect().top;
+                
+                // Calculer la distance
+                const dx = particleX - x;
+                const dy = particleY - y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Si la particule est proche, la faire "sauter"
+                if (distance < 100) {
+                    // Intensité inversement proportionnelle à la distance
+                    const intensity = Math.max(0.2, 1 - distance / 100);
+                    
+                    // Direction opposée au clic
+                    const angle = Math.atan2(dy, dx);
+                    const moveX = Math.cos(angle) * 20 * intensity;
+                    const moveY = Math.sin(angle) * 20 * intensity;
+                    
+                    // Appliquer la transformation
+                    const originalTransform = particle.style.transform || '';
+                    particle.style.transform = `${originalTransform} translate(${moveX}px, ${moveY}px)`;
+                    particle.style.transition = 'transform 0.3s ease-out';
+					
+					// Revenir progressivement à la position d'origine
+                    setTimeout(() => {
+                        particle.style.transform = originalTransform;
+                        particle.style.transition = 'transform 1s ease-in-out';
+                    }, 300);
+                }
+            });
+        }
+        
+        // Effet de brume musicale interactive
+        function addMusicalMistEffect() {
+            const mistContainer = document.createElement('div');
+            mistContainer.className = 'mist-container';
+            mistContainer.style.position = 'absolute';
+            mistContainer.style.top = '0';
+            mistContainer.style.left = '0';
+            mistContainer.style.width = '100%';
+            mistContainer.style.height = '100%';
+            mistContainer.style.pointerEvents = 'none';
+            mistContainer.style.zIndex = '1';
+            
+            auraVisualization.appendChild(mistContainer);
+            
+            // Créer des nuages de brume
+            for (let i = 0; i < 5; i++) {
+                const mist = document.createElement('div');
+                mist.className = 'musical-mist';
+                mist.style.position = 'absolute';
+                mist.style.borderRadius = '50%';
+                mist.style.filter = 'blur(40px)';
+                mist.style.opacity = '0.15';
+                mist.style.background = `radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%)`;
+                
+                // Taille et position aléatoires
+                const size = 100 + Math.random() * 100;
+                mist.style.width = `${size}px`;
+                mist.style.height = `${size}px`;
+                
+                // Position aléatoire
+                mist.style.left = `${Math.random() * 100}%`;
+                mist.style.top = `${Math.random() * 100}%`;
+                
+                // Animation flottante
+                mist.style.animation = `floatParticle ${10 + Math.random() * 15}s ease-in-out infinite ${Math.random() * 5}s`;
+                
+                mistContainer.appendChild(mist);
+            }
+        }
+        
+        // Animation interactive des options du quiz
+        function setupQuizOptionAnimations() {
+            // Délégation d'événements pour les options du quiz
+            document.addEventListener('click', function(e) {
+                // Vérifier si c'est une option du quiz
+                if (e.target.classList.contains('quiz-option') || e.target.parentElement.classList.contains('quiz-option')) {
+                    const option = e.target.classList.contains('quiz-option') ? e.target : e.target.parentElement;
+                    
+                    // Créer un effet d'onde
+                    createSelectionRipple(option);
+                }
+            });
+        }
+        
+        // Effet d'onde lors de la sélection d'une option
+        function createSelectionRipple(element) {
+            // Créer l'élément d'onde
+            const ripple = document.createElement('div');
+            ripple.className = 'option-ripple';
+            ripple.style.position = 'absolute';
+            ripple.style.borderRadius = '50%';
+            ripple.style.backgroundColor = 'rgba(99, 102, 241, 0.3)';
+            ripple.style.top = '0';
+            ripple.style.left = '0';
+            ripple.style.width = '100%';
+            ripple.style.height = '100%';
+            ripple.style.transform = 'scale(0)';
+            ripple.style.pointerEvents = 'none';
+            
+            // Ajouter position relative à l'élément parent s'il ne l'a pas déjà
+            if (window.getComputedStyle(element).position === 'static') {
+                element.style.position = 'relative';
+            }
+            
+            // Ajouter l'onde à l'élément
+            element.appendChild(ripple);
+            
+            // Animation d'expansion
+            ripple.animate(
+                [
+                    { transform: 'scale(0)', opacity: 0.7 },
+                    { transform: 'scale(2)', opacity: 0 }
+                ],
+                {
+                    duration: 600,
+                    easing: 'ease-out'
+                }
+            );
+            
+            // Supprimer après l'animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        }
+        
+        // Détection des mouvements de la souris pour effets interactifs
+        function setupMouseMoveEffects() {
+            auraVisualization.addEventListener('mousemove', function(e) {
+                // Ne pas appliquer si nous n'avons pas encore de profil
+                if (!userProfile) return;
+                
+                // Position relative au conteneur
+                const rect = auraVisualization.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                // Déplacer légèrement les particules proches
+                subtlyMoveNearbyParticles(x, y);
+            });
+        }
+        
+        // Déplacer subtilement les particules proches du curseur
+        function subtlyMoveNearbyParticles(x, y) {
+            const particles = document.querySelectorAll('.aura-particle, .music-note');
+            
+            particles.forEach(particle => {
+                // Obtenir la position de la particule
+                const rect = particle.getBoundingClientRect();
+                const particleX = rect.left + rect.width / 2 - auraVisualization.getBoundingClientRect().left;
+                const particleY = rect.top + rect.height / 2 - auraVisualization.getBoundingClientRect().top;
+                
+                // Calculer la distance
+                const dx = particleX - x;
+                const dy = particleY - y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                // Si la particule est proche, la déplacer légèrement
+                if (distance < 80) {
+                    // Intensité inversement proportionnelle à la distance
+                    const intensity = Math.max(0.05, 0.2 - distance / 400);
+                    
+                    // Direction opposée au curseur
+                    const angle = Math.atan2(dy, dx);
+                    const moveX = Math.cos(angle) * 10 * intensity;
+                    const moveY = Math.sin(angle) * 10 * intensity;
+                    
+                    // Appliquer une subtile transformation
+                    particle.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    particle.style.transition = 'transform 0.3s ease-out';
+                } else {
+                    // Réinitialiser progressivement
+                    particle.style.transform = '';
+                    particle.style.transition = 'transform 1s ease-in-out';
+                }
+            });
+        }
+        
+        // Animation pour les résultats finaux
+        function addFinalTouchesToResults() {
+            // Ajouter un effet de particules célébration
+            document.getElementById('retake-quiz-btn').addEventListener('click', function() {
+                // Afficher d'abord un effet de célébration avant de redémarrer
+                createCelebrationEffect().then(() => {
+                    restartQuiz();
+                });
+            });
+            
+            // Ajouter une animation de survol aux boîtes de résultats
+            const resultBoxes = document.querySelectorAll('.result-box');
+            resultBoxes.forEach(box => {
+                box.addEventListener('mouseenter', function() {
+                    box.style.transform = 'translateY(-5px) scale(1.02)';
+                    box.style.transition = 'all 0.3s ease';
+                    box.style.boxShadow = '0 8px 15px rgba(0, 0, 0, 0.15)';
+                });
+                
+                box.addEventListener('mouseleave', function() {
+                    box.style.transform = '';
+                    box.style.boxShadow = '';
+                });
+            });
+        }
+        
+        // Créer un effet de célébration
+        function createCelebrationEffect() {
+            return new Promise((resolve) => {
+                // Créer des confettis musicaux
+                for (let i = 0; i < 50; i++) {
+                    createMusicalConfetti();
+                }
+                
+                // Résoudre après l'animation
+                setTimeout(resolve, 1500);
+            });
+        }
+        
+        // Créer un confetti musical
+        function createMusicalConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'musical-confetti';
+            
+            // Décider si c'est une note ou une particule
+            const isNote = Math.random() > 0.5;
+            
+            if (isNote) {
+                // Notes de musique
+                const noteSymbols = ['♪', '♫', '♬', '♩', '♭', '♮', '♯'];
+                confetti.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+                confetti.style.color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                confetti.style.fontSize = `${Math.random() * 20 + 10}px`;
+                confetti.style.textShadow = '0 0 5px white';
+            } else {
+                // Particules colorées
+                confetti.style.width = `${Math.random() * 8 + 5}px`;
+                confetti.style.height = `${Math.random() * 8 + 5}px`;
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 80%, 60%)`;
+                confetti.style.borderRadius = '50%';
+            }
+            
+            // Styles communs
+            confetti.style.position = 'fixed';
+            confetti.style.left = `${50 + (Math.random() - 0.5) * 20}%`;
+            confetti.style.top = '50%';
+            confetti.style.zIndex = '9999';
+            confetti.style.opacity = '1';
+            confetti.style.pointerEvents = 'none';
+            
+            document.body.appendChild(confetti);
+            
+            // Animation
+            const angle = Math.random() * Math.PI * 2;
+            const distance = 100 + Math.random() * 300;
+            const duration = 1 + Math.random();
+            
+            // Définir l'animation
+            confetti.animate(
+                [
+                    { 
+                        transform: 'translate(-50%, -50%) rotate(0deg)', 
+                        opacity: 1 
+                    },
+                    { 
+                        transform: `translate(
+                            calc(-50% + ${Math.cos(angle) * distance}px), 
+                            calc(-50% + ${Math.sin(angle) * distance}px)
+                        ) rotate(${Math.random() * 360}deg)`, 
+                        opacity: 0 
+                    }
+                ],
+                {
+                    duration: duration * 1000,
+                    easing: 'cubic-bezier(0.215, 0.610, 0.355, 1.000)',
+                    fill: 'forwards'
+                }
+            );
+            
+            // Supprimer après l'animation
+            setTimeout(() => {
+                confetti.remove();
+            }, duration * 1000);
+        }
+        
+        // Configuration des boutons de partage
+        function setupSocialSharing(profile) {
+            const shareTitle = `J'ai découvert mon aura musicale : ${profile.name}`;
+            const shareDescription = "Faites le quiz et découvrez votre propre aura musicale !";
+            const shareUrl = window.location.href;
+            
+            // X (anciennement Twitter)
+            document.getElementById('x-share').addEventListener('click', function() {
+                const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(shareTitle)}&url=${encodeURIComponent(shareUrl)}`;
+                window.open(xUrl, '_blank');
+            });
+            
+            // Facebook
+            document.getElementById('facebook-share').addEventListener('click', function() {
+                const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+                window.open(facebookUrl, '_blank');
+            });
+            
+            // Instagram
+            document.getElementById('instagram-share').addEventListener('click', function() {
+                alert("Pour partager sur Instagram :\n1. Prenez une capture d'écran de votre aura\n2. Ouvrez Instagram\n3. Créez une nouvelle publication ou story\n4. Ajoutez la capture d'écran\n5. Mentionnez le site pour que vos amis puissent découvrir leur aura musicale");
+                
+                // Sur mobile, essayer d'ouvrir l'application Instagram
+                if (/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                    window.location.href = "instagram://camera";
+                } else {
+                    window.open("https://www.instagram.com", "_blank");
+                }
+            });
+            
+            // WhatsApp
+            document.getElementById('whatsapp-share').addEventListener('click', function() {
+                const whatsappText = `${shareTitle} ${shareDescription} ${shareUrl}`;
+                const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(whatsappText)}`;
+                window.open(whatsappUrl, '_blank');
+            });
+            
+            // LinkedIn
+            document.getElementById('linkedin-share').addEventListener('click', function() {
+                const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+                window.open(linkedinUrl, '_blank');
+            });
+            
+            // Email
+            document.getElementById('email-share').addEventListener('click', function() {
+                const subject = shareTitle;
+                const body = `${shareDescription}\n\n${shareUrl}`;
+                window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            });
+        }
+        
+        // Initialiser tous les effets dynamiques
+        function initDynamicEffects() {
+            setupQuizOptionAnimations();
+            addMusicalMistEffect();
+            setupMouseMoveEffects();
+            addFinalTouchesToResults();
+            
+            // Ajouter l'événement pour les effets sonores visuels
+            addInteractiveSoundEffects();
+            
+            // Initialiser la fonctionnalité de partage d'images
+            initSocialImageSharing();
+        }
+        
+        // Fonction principale de génération d'images pour les réseaux sociaux
+        function generateSocialShareImage(profile, platform = 'instagram') {
+            return new Promise((resolve, reject) => {
+                try {
+                    // Créer un canvas hors écran avec les dimensions adaptées à la plateforme
+                    const dimensions = getSocialMediaDimensions(platform);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = dimensions.width;
+                    canvas.height = dimensions.height;
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Dessiner l'arrière-plan avec un dégradé inspiré de l'aura
+                    drawSocialBackground(ctx, profile, dimensions);
+                    
+                    // Ajouter l'aura visuelle au centre
+                    drawAuraVisualization(ctx, profile, dimensions);
+                    
+                    // Ajouter le titre et les informations du profil
+                    drawProfileInfo(ctx, profile, platform, dimensions);
+                    
+                    // Ajouter des éléments décoratifs
+                    drawDecorativeElements(ctx, profile, dimensions);
+                    
+                    // Ajouter un QR code ou lien pour revenir au quiz
+                    drawCallToAction(ctx, profile, dimensions);
+                    
+                    // Convertir le canvas en image
+                    canvas.toBlob((blob) => {
+                        if (blob) {
+                            resolve({
+                                blob: blob,
+                                url: URL.createObjectURL(blob),
+                                dimensions: dimensions
+                            });
+                        } else {
+                            reject(new Error("Impossible de générer l'image"));
+                        }
+                    }, 'image/png');
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+        
+        // Obtenir les dimensions optimales pour chaque plateforme
+        function getSocialMediaDimensions(platform) {
+            switch(platform.toLowerCase()) {
+                case 'instagram':
+                    return { width: 1080, height: 1080, aspectRatio: 1 }; // Carré
+                case 'instagram-story':
+                    return { width: 1080, height: 1920, aspectRatio: 9/16 }; // Story
+                case 'facebook':
+                    return { width: 1200, height: 630, aspectRatio: 1.91 }; // Post standard
+                case 'twitter':
+                case 'x':
+                    return { width: 1200, height: 675, aspectRatio: 16/9 }; // Format optimal
+                case 'linkedin':
+                    return { width: 1200, height: 627, aspectRatio: 1.91 }; // Post standard
+                default:
+                    return { width: 1200, height: 630, aspectRatio: 1.91 }; // Format par défaut
+            }
+        }
+        
+        // Dessiner l'arrière-plan avec un dégradé inspiré du profil
+        function drawSocialBackground(ctx, profile, dimensions) {
+            const { width, height } = dimensions;
+            
+            // Créer un dégradé radial basé sur les couleurs du profil
+            const gradient = ctx.createRadialGradient(
+                width/2, height/2, 0,
+                width/2, height/2, width * 0.8
+            );
+            
+            // Utiliser les couleurs du profil musical avec opacity
+            gradient.addColorStop(0, `${profile.color}CC`); // Couleur principale avec 80% d'opacité
+            gradient.addColorStop(0.6, `${profile.secondaryColor}99`); // Couleur secondaire avec 60% d'opacité
+            gradient.addColorStop(1, '#121212'); // Noir pour les bords
+            
+            // Appliquer le dégradé
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, width, height);
+            
+			// Ajouter un effet de vignette pour plus de contraste au centre
+    const vignetteGradient = ctx.createRadialGradient(
+        width/2, height/2, width * 0.1,  // Petit cercle central
+        width/2, height/2, width * 0.8   // Grand cercle
+    );
+    vignetteGradient.addColorStop(0, 'rgba(0,0,0,0)'); // Transparent au centre
+    vignetteGradient.addColorStop(1, 'rgba(0,0,0,0.5)'); // Semi-opaque aux bords
+    
+    // Appliquer l'effet de vignette
+    ctx.fillStyle = vignetteGradient;
+    ctx.fillRect(0, 0, width, height);
+			
+            // Ajouter un effet de texture subtil
+            addNoiseTexture(ctx, width, height, 0.03);
+        }
+        
+        // Ajouter une texture de bruit pour un rendu plus organique
+        function addNoiseTexture(ctx, width, height, opacity) {
+            // Conserver l'état actuel du contexte
+            ctx.save();
+            
+            // Paramètres pour la texture
+            ctx.globalAlpha = opacity;
+            
+            // Créer une texture de points aléatoires
+            for (let i = 0; i < width * height * 0.05; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const radius = Math.random() * 1.5 + 0.5;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = Math.random() > 0.5 ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.2)';
+                ctx.fill();
+            }
+            
+			function drawLightRays(ctx, profile, width, height) {
+    // Sauvegarder l'état actuel
+    ctx.save();
+    
+    // Centre de l'image
+    const centerX = width / 2;
+    const centerY = height / 2;
+    
+    // Nombre de rayons
+    const rayCount = 12;
+    
+    // Créer un dégradé pour les rayons
+    for (let i = 0; i < rayCount; i++) {
+        // Angle du rayon
+        const angle = (i / rayCount) * Math.PI * 2;
+        
+        // Points de début et de fin du rayon
+        const startX = centerX;
+        const startY = centerY;
+        const endX = centerX + Math.cos(angle) * width;
+        const endY = centerY + Math.sin(angle) * height;
+        
+        // Créer un dégradé linéaire pour le rayon
+        const rayGradient = ctx.createLinearGradient(startX, startY, endX, endY);
+        rayGradient.addColorStop(0, `${profile.color}80`); // Couleur principale avec 50% d'opacité
+        rayGradient.addColorStop(0.5, `${profile.secondaryColor}40`); // Couleur secondaire avec 25% d'opacité
+        rayGradient.addColorStop(1, 'rgba(0,0,0,0)'); // Transparent à la fin
+        
+        // Dessiner le rayon
+        ctx.beginPath();
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = rayGradient;
+        ctx.lineWidth = 3 + Math.random() * 5; // Épaisseur variable
+        ctx.globalAlpha = 0.15 + Math.random() * 0.1; // Opacité variable
+        ctx.stroke();
+    }
+    
+    // Restaurer l'état
+    ctx.globalAlpha = 1;
+    ctx.restore();
+}
+			
+            // Restaurer l'état du contexte
+            ctx.restore();
+        }
+        
+        // Dessiner la visualisation de l'aura
+        function drawAuraVisualization(ctx, profile, dimensions) {
+            const { width, height } = dimensions;
+            const centerX = width / 2;
+            const centerY = height / 2;
+            const radius = Math.min(width, height) * 0.25; // Taille relative de l'aura
+            
+            // Effet de halo principal
+            const gradient = ctx.createRadialGradient(
+                centerX, centerY, 0,
+                centerX, centerY, radius * 1.5
+            );
+            gradient.addColorStop(0, profile.color);
+            gradient.addColorStop(0.5, profile.secondaryColor);
+            gradient.addColorStop(1, 'transparent');
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.globalAlpha = 0.8;
+            ctx.fill();
+            ctx.globalAlpha = 1;
+            
+            // Ajouter des anneaux concentriques
+            drawAuraRings(ctx, profile, centerX, centerY, radius);
+            
+            // Ajouter des particules lumineuses
+            drawAuraParticles(ctx, profile, centerX, centerY, radius);
+            
+            // Ajouter des symboles musicaux
+            drawMusicalSymbols(ctx, profile, centerX, centerY, radius);
+        }
+        
+        // Dessiner les anneaux autour de l'aura
+        function drawAuraRings(ctx, profile, centerX, centerY, radius) {
+            // Anneaux lumineux avec transparence
+            [0.7, 0.85, 1.0].forEach((scale, index) => {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius * scale, 0, Math.PI * 2);
+                ctx.strokeStyle = index % 2 === 0 ? profile.color : profile.secondaryColor;
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.3 - (index * 0.07);
+                ctx.stroke();
+            });
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        // Dessiner des particules scintillantes
+        function drawAuraParticles(ctx, profile, centerX, centerY, radius) {
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * radius * 1.2;
+                const size = Math.random() * 4 + 1;
+                
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                
+                // Alternance des couleurs
+                ctx.fillStyle = Math.random() > 0.5 ? profile.color : profile.secondaryColor;
+                ctx.globalAlpha = Math.random() * 0.7 + 0.3;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            ctx.globalAlpha = 1;
+        }
+        
+        // Dessiner des symboles musicaux autour de l'aura
+        function drawMusicalSymbols(ctx, profile, centerX, centerY, radius) {
+            const symbols = ['♪', '♫', '♬', '♩', '♭', '♮', '♯'];
+            const symbolCount = 15;
+            
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            for (let i = 0; i < symbolCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const distance = radius * (0.7 + Math.random() * 0.6);
+                const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+                
+                const x = centerX + Math.cos(angle) * distance;
+                const y = centerY + Math.sin(angle) * distance;
+                
+                // Effet de lueur sur les symboles
+                ctx.fillStyle = Math.random() > 0.5 ? profile.color : profile.secondaryColor;
+                ctx.globalAlpha = Math.random() * 0.8 + 0.2;
+                
+                // Effet de halo autour du texte
+                ctx.shadowColor = profile.color;
+                ctx.shadowBlur = 10;
+                
+                ctx.fillText(symbol, x, y);
+            }
+            
+            // Réinitialiser les effets
+            ctx.shadowBlur = 0;
+            ctx.globalAlpha = 1;
+        }
+        
+        // Dessiner les informations du profil
+        
+function drawProfileInfo(ctx, profile, platform, dimensions) {
+    const { width, height } = dimensions;
+    
+    // Ajuster la taille du texte et la position selon la plateforme
+    const isVertical = height > width;
+    let titleY;
+    
+    if (isVertical) { // Story Instagram ou format vertical
+        titleY = height * 0.25;
+    } else { // Format horizontal
+        titleY = height * 0.3;
+    }
+    
+    // Ajouter un fond semi-transparent pour mieux faire ressortir le texte
+    const backgroundHeight = isVertical ? height * 0.2 : height * 0.3;
+    const backgroundY = isVertical ? height * 0.2 : height * 0.2;
+    
+    // Rectangle semi-transparent
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.4)';
+    ctx.fillRect(width * 0.1, backgroundY, width * 0.8, backgroundHeight);
+    
+    // Dessiner le titre principal avec effet de lueur
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    
+    // Effet de lueur autour du texte
+    ctx.shadowColor = profile.color;
+    ctx.shadowBlur = 15;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    // Titre principal - nom de l'aura
+    ctx.font = `bold ${Math.floor(width * 0.05)}px 'Quicksand', sans-serif`;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.fillText("MON AURA MUSICALE", width / 2, titleY);
+    
+    // Nom du profil musical avec taille plus grande
+    ctx.font = `bold ${Math.floor(width * 0.07)}px 'Quicksand', sans-serif`;
+    ctx.fillStyle = profile.color;
+    ctx.fillText(profile.name, width / 2, titleY + width * 0.07);
+    
+    // Réinitialiser l'effet de lueur
+    ctx.shadowBlur = 0;
+    
+    // Ajouter une barre de séparation design
+    const separatorY = titleY + width * 0.12;
+    const separatorWidth = width * 0.3;
+    
+    ctx.beginPath();
+    ctx.moveTo(width / 2 - separatorWidth / 2, separatorY);
+    ctx.lineTo(width / 2 + separatorWidth / 2, separatorY);
+    ctx.strokeStyle = profile.secondaryColor;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    
+    // Ajouter un résumé du profil en bas avec ligne qui s'adapte
+    if (!isVertical) {
+        // Texte avec résumé sur plusieurs lignes pour les formats horizontaux
+        let descriptionText = profile.description;
+        const maxLineWidth = width * 0.7; // Largeur maximale de la ligne
+        const lineHeight = Math.floor(width * 0.03); // Hauteur de ligne
+        const maxLines = 2; // Nombre maximum de lignes
+        
+        ctx.font = `${Math.floor(width * 0.025)}px 'Quicksand', sans-serif`;
+        ctx.fillStyle = '#FFFFFF';
+        ctx.textAlign = 'center';
+        ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetX = 2;
+        ctx.shadowOffsetY = 2;
+        
+        // Traitement pour diviser le texte en lignes
+        let words = descriptionText.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+        
+        for (let i = 1; i < words.length; i++) {
+            let testLine = currentLine + ' ' + words[i];
+            let metrics = ctx.measureText(testLine);
+            
+            if (metrics.width < maxLineWidth) {
+                currentLine = testLine;
+            } else {
+                lines.push(currentLine);
+                currentLine = words[i];
+                
+                // Limiter le nombre de lignes
+                if (lines.length >= maxLines - 1) {
+                    break;
+                }
+            }
+        }
+        
+        // Ajouter la dernière ligne
+        if (currentLine.trim() !== '') {
+            lines.push(currentLine);
+        }
+        
+        // Si on atteint la limite de lignes et qu'il reste des mots, ajouter "..."
+        if (lines.length >= maxLines && words.length > lines.join(' ').split(' ').length) {
+            let lastLine = lines[lines.length - 1];
+            
+            // Raccourcir la dernière ligne pour ajouter "..."
+            while (ctx.measureText(lastLine + '...').width > maxLineWidth) {
+                let lastWords = lastLine.split(' ');
+                lastWords.pop();
+                lastLine = lastWords.join(' ');
+                
+                if (lastWords.length <= 1) break;
+            }
+            
+            lines[lines.length - 1] = lastLine + '...';
+        }
+        
+        // Dessiner chaque ligne
+        for (let i = 0; i < lines.length; i++) {
+            ctx.fillText(
+                lines[i],
+                width / 2,
+                height * 0.75 + (i * lineHeight)
+            );
+        }
+        
+        // Réinitialiser les ombres
+        ctx.shadowColor = 'transparent';
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 0;
+    }
+}
+        
+        // Dessiner des éléments décoratifs adaptés au profil
+        function drawDecorativeElements(ctx, profile, dimensions) {
+            const { width, height } = dimensions;
+            
+            // Ajouter un effet de vague sonore stylisé en bas de l'image
+            drawSoundWave(ctx, profile, width, height);
+            
+            // Ajouter des éléments visuels selon le type de profil
+            switch(getProfileType(profile)) {
+                case 'dynamic': // Pour les auras rouges et énergiques
+                    drawDynamicElements(ctx, profile, width, height);
+                    break;
+                case 'calm': // Pour les auras bleues et calmes
+                    drawCalmElements(ctx, profile, width, height);
+                    break;
+                case 'creative': // Pour les auras violettes et mystiques
+                    drawCreativeElements(ctx, profile, width, height);
+                    break;
+                default: // Pour les autres types d'auras
+                    drawBalancedElements(ctx, profile, width, height);
+            }
+        }
+        
+        // Déterminer le type de profil selon sa couleur
+        function getProfileType(profile) {
+            const color = profile.color.toLowerCase();
+            
+            if (color.includes('ff') && (color.includes('33') || color.includes('44') || color.includes('55'))) {
+                return 'dynamic'; // Rouge, orange
+            } else if (color.includes('00') || color.includes('33') || color.includes('22') || color.includes('66')) {
+                if (color.includes('ff') || color.includes('ee') || color.includes('dd')) {
+                    return 'balanced'; // Jaune, vert clair
+                } else {
+                    return 'calm'; // Bleu, vert
+                }
+            } else if (color.includes('88') || color.includes('99') || color.includes('aa') || color.includes('bb')) {
+                return 'creative'; // Violet, rose
+            } else {
+                return 'balanced';
+            }
+        }
+        
+        // Dessiner une onde sonore stylisée
+        function drawSoundWave(ctx, profile, width, height) {
+            const waveHeight = height * 0.1;
+            const baseY = height * 0.9;
+            const segments = 20;
+            
+            ctx.beginPath();
+            ctx.moveTo(0, baseY);
+            
+            // Créer une vague aléatoire
+            for (let i = 0; i <= segments; i++) {
+                const x = (width / segments) * i;
+                const amplitude = Math.sin(i * 0.5) * waveHeight;
+                const y = baseY - amplitude;
+                
+                if (i === 0) {
+                    ctx.lineTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            
+            // Fermer la forme pour créer un fond solide
+            ctx.lineTo(width, height);
+            ctx.lineTo(0, height);
+            ctx.closePath();
+            
+            // Créer un dégradé pour la vague
+            const gradient = ctx.createLinearGradient(0, baseY - waveHeight, 0, height);
+            gradient.addColorStop(0, `${profile.color}99`);
+            gradient.addColorStop(1, 'rgba(0,0,0,0.5)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fill();
+        }
+        
+        // Dessiner des éléments pour profils dynamiques
+        function drawDynamicElements(ctx, profile, width, height) {
+            // Ajouter des lignes énergiques
+            for (let i = 0; i < 10; i++) {
+                const startX = Math.random() * width;
+                const startY = Math.random() * height;
+                const length = Math.random() * 100 + 50;
+                const angle = Math.random() * Math.PI * 2;
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(
+                    startX + Math.cos(angle) * length,
+                    startY + Math.sin(angle) * length
+                );
+                
+                ctx.strokeStyle = `${profile.secondaryColor}40`;
+                ctx.lineWidth = Math.random() * 3 + 1;
+                ctx.stroke();
+            }
+        }
+        
+        // Dessiner des éléments pour profils calmes
+        function drawCalmElements(ctx, profile, width, height) {
+            // Ajouter des cercles concentriques subtils
+            for (let i = 0; i < 5; i++) {
+                const centerX = width * (0.3 + Math.random() * 0.4);
+                const centerY = height * (0.3 + Math.random() * 0.4);
+                const radius = Math.random() * 120 + 30;
+                
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = `${profile.secondaryColor}30`;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+        
+        // Dessiner des éléments pour profils créatifs
+        function drawCreativeElements(ctx, profile, width, height) {
+            // Ajouter des formes géométriques stylisées
+            for (let i = 0; i < 8; i++) {
+                const sides = Math.floor(Math.random() * 3) + 3; // Triangles, carrés, pentagones
+                const centerX = Math.random() * width;
+                const centerY = Math.random() * height;
+                const radius = Math.random() * 40 + 20;
+                
+                ctx.beginPath();
+                for (let j = 0; j < sides; j++) {
+                    const angle = (j / sides) * Math.PI * 2;
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    
+                    if (j === 0) {
+                        ctx.moveTo(x, y);
+                    } else {
+                        ctx.lineTo(x, y);
+                    }
+                }
+                ctx.closePath();
+                
+                ctx.strokeStyle = `${profile.color}30`;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+            }
+        }
+        
+        // Dessiner des éléments pour profils équilibrés
+        function drawBalancedElements(ctx, profile, width, height) {
+            // Ajouter des points et petits cercles harmonieux
+            for (let i = 0; i < 15; i++) {
+                const x = Math.random() * width;
+                const y = Math.random() * height;
+                const radius = Math.random() * 8 + 2;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, radius, 0, Math.PI * 2);
+                ctx.fillStyle = `${profile.secondaryColor}40`;
+                ctx.fill();
+            }
+        }
+        
+        function drawCallToAction(ctx, profile, dimensions) {
+    const { width, height } = dimensions;
+    
+    // Texte d'appel à l'action avec meilleure visibilité
+    const ctaY = height * 0.94;
+    
+    // Ajouter une ombre/contour pour améliorer la lisibilité du texte
+    ctx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetX = 2;
+    ctx.shadowOffsetY = 2;
+    
+    ctx.font = `bold ${Math.floor(width * 0.03)}px 'Quicksand', sans-serif`;
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText("Découvrez votre aura musicale sur rainbow.singlees.org", width / 2, ctaY);
+    
+    // Réinitialiser les ombres
+    ctx.shadowColor = 'transparent';
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 0;
+    
+    // Remplacer le cercle blanc par un petit logo stylisé
+    const logoSize = width * 0.06;
+    const logoX = width - logoSize - 20;
+    const logoY = height - logoSize - 20;
+    
+    // Dessiner un logo stylisé avec les couleurs du profil au lieu d'un simple cercle blanc
+    // Fond du logo avec dégradé
+    const logoGradient = ctx.createRadialGradient(
+        logoX, logoY, 0,
+        logoX, logoY, logoSize / 2
+    );
+    logoGradient.addColorStop(0, `${profile.color}CC`);
+    logoGradient.addColorStop(1, `${profile.secondaryColor}CC`);
+    
+    ctx.beginPath();
+    ctx.arc(logoX, logoY, logoSize / 2, 0, Math.PI * 2);
+    ctx.fillStyle = logoGradient;
+    ctx.fill();
+    
+    // Contour du logo
+    ctx.beginPath();
+    ctx.arc(logoX, logoY, logoSize / 2, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Ajouter une note de musique à l'intérieur du logo
+    ctx.font = `bold ${Math.floor(logoSize * 0.6)}px Arial`;
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('♪', logoX, logoY);
+    
+    // Remplacer le carré blanc du QR code par un mini QR code stylisé
+    // Nous allons simuler un QR code plus discret avec un motif
+    const qrSize = logoSize;
+    const qrX = 20;
+    const qrY = height - qrSize - 20;
+    
+    // Fond du QR code avec dégradé léger
+    const qrGradient = ctx.createLinearGradient(
+        qrX, qrY,
+        qrX + qrSize, qrY + qrSize
+    );
+    qrGradient.addColorStop(0, 'rgba(40, 40, 40, 0.7)');
+    qrGradient.addColorStop(1, 'rgba(70, 70, 70, 0.7)');
+    
+    // Fond légèrement transparent pour le QR code
+    ctx.beginPath();
+    ctx.rect(qrX, qrY, qrSize, qrSize);
+    ctx.fillStyle = qrGradient;
+    ctx.fill();
+    
+    // Bordure subtile
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    
+    // Simuler des points de QR code
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    const cellSize = qrSize / 8;
+    
+    // Créer un motif de QR code stylisé
+    // Coins standards des QR codes
+    
+    // Coin supérieur gauche
+    fillQRPositionSquare(ctx, qrX, qrY, 3 * cellSize);
+    
+    // Coin supérieur droit
+    fillQRPositionSquare(ctx, qrX + qrSize - 3 * cellSize, qrY, 3 * cellSize);
+    
+    // Coin inférieur gauche
+    fillQRPositionSquare(ctx, qrX, qrY + qrSize - 3 * cellSize, 3 * cellSize);
+    
+    // Ajouter quelques cellules aléatoires pour simuler le contenu du QR
+    for (let i = 0; i < 15; i++) {
+        const cellX = qrX + Math.floor(Math.random() * 8) * cellSize;
+        const cellY = qrY + Math.floor(Math.random() * 8) * cellSize;
+        ctx.fillRect(cellX, cellY, cellSize, cellSize);
+    }
+}
+        // Fonction auxiliaire pour dessiner les carrés de position du QR code
+function fillQRPositionSquare(ctx, x, y, size) {
+    // Carré externe
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(x, y, size, size);
+    
+    // Carré intermédiaire
+    ctx.fillStyle = 'rgba(40, 40, 40, 0.8)';
+    ctx.fillRect(x + size/7, y + size/7, size - 2*(size/7), size - 2*(size/7));
+    
+    // Carré interne
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+    ctx.fillRect(x + 2*(size/7), y + 2*(size/7), size - 4*(size/7), size - 4*(size/7));
+}
+		
+        // Fonction pour intégrer la génération d'image au bouton de partage
+        function setupImageSharingButtons() {
+            // Référence aux boutons de partage
+            const shareButtons = document.querySelectorAll('.social-share-button');
+            
+            shareButtons.forEach(button => {
+                // Ajouter un nouvel écouteur pour prévisualiser/générer l'image
+                button.addEventListener('mouseover', async function() {
+                    // Si nous n'avons pas encore généré d'image pour cette plateforme
+                    const platform = this.id.split('-')[0]; // ex: 'facebook' de 'facebook-share'
+                    
+                    // Générer l'image uniquement lors du premier hover
+                    if (!this.dataset.imageGenerated) {
+                        try {
+                            // Afficher un indicateur de chargement
+                            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                            
+                            // Générer l'image pour cette plateforme
+                            const imageData = await generateSocialShareImage(userProfile, platform);
+                            
+                            // Stocker l'URL de l'image
+                            this.dataset.shareImageUrl = imageData.url;
+                            this.dataset.imageGenerated = 'true';
+                            
+                            // Restaurer l'icône d'origine
+                            this.innerHTML = this.dataset.originalHtml || this.innerHTML;
+                            
+                            // Ajouter une classe pour indiquer que l'image est prête
+                            this.classList.add('image-ready');
+                        } catch (error) {
+                            console.error("Erreur lors de la génération de l'image:", error);
+                            // Restaurer l'icône d'origine en cas d'erreur
+                            this.innerHTML = this.dataset.originalHtml || this.innerHTML;
+                        }
+                    }
+                });
+                
+                // Sauvegarder le HTML d'origine pour le restaurer après le chargement
+                button.dataset.originalHtml = button.innerHTML;
+                
+                // Modifier le comportement du clic pour utiliser l'image générée
+                button.addEventListener('click', function(e) {
+                    // Si nous avons une image générée
+                    if (this.dataset.shareImageUrl) {
+                        e.preventDefault();
+                        
+                        const platform = this.id.split('-')[0];
+                        const shareUrl = window.location.href;
+                        const shareTitle = `J'ai découvert mon aura musicale : ${userProfile.name}`;
+                        const shareDescription = "Faites le quiz et découvrez votre propre aura musicale !";
+                        
+                        // Ouvrir la boîte de dialogue de partage avec l'image
+                        shareWithImage(platform, {
+                            url: shareUrl,
+                            title: shareTitle,
+                            description: shareDescription,
+                            imageUrl: this.dataset.shareImageUrl
+                        });
+                    }
+                });
+            });
+        }
+        
+        // Fonction pour partager avec l'image générée
+        function shareWithImage(platform, shareData) {
+            const { url, title, description, imageUrl } = shareData;
+            
+            // Différentes méthodes de partage selon la plateforme
+            switch(platform) {
+                case 'facebook':
+                    // Facebook utilise l'API de partage si disponible, sinon URL classique
+                    if (window.FB) {
+                        FB.ui({
+                            method: 'share',
+                            href: url,
+                            quote: title
+                        });
+                    } else {
+                        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(title)}`, '_blank');
+                    }
+                    break;
+                    
+                case 'twitter':
+                case 'x':
+                    // Twitter/X ne peut pas attacher d'image via URL, donc on propose de télécharger
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = imageUrl;
+                    downloadLink.download = `aura-musicale-${platform}.png`;
+                    downloadLink.click();
+                    
+                    // Puis ouvrir la boîte de dialogue Twitter
+                    setTimeout(() => {
+                        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`, '_blank');
+                    }, 500);
+                    break;
+                    
+                case 'instagram':
+                    // Instagram n'a pas d'API de partage - proposer le téléchargement
+                    const instagramDownload = document.createElement('a');
+                    instagramDownload.href = imageUrl;
+                    instagramDownload.download = 'aura-musicale-instagram.png';
+                    instagramDownload.click();
+                    
+                    // Afficher un modal d'instructions
+                    showInstagramShareModal();
+                    break;
+                    
+                case 'whatsapp':
+                    // WhatsApp ne peut pas joindre d'image via URL - télécharger puis suggérer
+                    const waDownload = document.createElement('a');
+                    waDownload.href = imageUrl;
+                    waDownload.download = 'aura-musicale-whatsapp.png';
+                    waDownload.click();
+                    
+                    // Ouvrir WhatsApp avec le texte
+                    setTimeout(() => {
+                        window.open(`https://wa.me/?text=${encodeURIComponent(title + ' ' + url)}`, '_blank');
+                    }, 500);
+                    break;
+                    
+                case 'linkedin':
+                    // LinkedIn n'accepte pas les images via URL - télécharger puis proposer
+                    const liDownload = document.createElement('a');
+                    liDownload.href = imageUrl;
+                    liDownload.download = 'aura-musicale-linkedin.png';
+                    liDownload.click();
+                    
+                    // Ouvrir LinkedIn
+                    setTimeout(() => {
+                        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+                    }, 500);
+                    break;
+                    
+                case 'email':
+                    // Pour l'email, télécharger l'image et suggérer de l'attacher
+                    const emailDownload = document.createElement('a');
+                    emailDownload.href = imageUrl;
+                    emailDownload.download = 'mon-aura-musicale.png';
+                    emailDownload.click();
+                    
+                    // Ouvrir le client email avec le sujet et corps préremplis
+                    setTimeout(() => {
+                        window.location.href = `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(description + '\n\n' + url + '\n\n(N\'oubliez pas de joindre l\'image téléchargée!)')}`;
+                    }, 500);
+                    break;
+            }
+        }
+        
+        // Afficher un modal avec instructions pour Instagram
+        function showInstagramShareModal() {
+            // Créer le modal d'instructions
+            const modal = document.createElement('div');
+            modal.className = 'instagram-share-modal';
+            modal.style.position = 'fixed';
+            modal.style.top = '0';
+            modal.style.left = '0';
+            modal.style.width = '100%';
+            modal.style.height = '100%';
+            modal.style.backgroundColor = 'rgba(0,0,0,0.8)';
+            modal.style.display = 'flex';
+            modal.style.alignItems = 'center';
+            modal.style.justifyContent = 'center';
+            modal.style.zIndex = '9999';
+            
+            // Contenu du modal
+            modal.innerHTML = `
+                <div class="modal-content" style="background-color: white; padding: 30px; border-radius: 15px; max-width: 400px; text-align: center;">
+                    <h3 style="margin-top: 0;">Partager sur Instagram</h3>
+                    <p>L'image a été téléchargée sur votre appareil.</p>
+                    <p>Pour la partager sur Instagram :</p>
+                    <ol style="text-align: left;">
+                        <li>Ouvrez l'application Instagram</li>
+                        <li>Créez une nouvelle publication ou story</li>
+                        <li>Sélectionnez l'image téléchargée depuis votre galerie</li>
+                        <li>Ajoutez un texte comme : "J'ai découvert mon aura musicale ! Découvrez la vôtre sur rainbow.singlees.org"</li>
+                        <li>Publiez !</li>
+                    </ol>
+                    <button id="close-modal" style="background-color: #6366f1; color: white; border: none; padding: 10px 20px; border-radius: 5px; margin-top: 15px; cursor: pointer;">Compris !</button>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Fermer le modal
+            document.getElementById('close-modal').addEventListener('click', function() {
+                document.body.removeChild(modal);
+            });
+        }
+        
+        // Fonction pour prévisualiser l'image générée
+        function createImagePreviewModal(imageUrl, platform) {
+    // Créer le modal de prévisualisation
+    const modal = document.createElement('div');
+    modal.className = 'preview-modal';
+    modal.style.position = 'fixed';
+    modal.style.top = '0';
+    modal.style.left = '0';
+    modal.style.width = '100%';
+    modal.style.height = '100%';
+    modal.style.backgroundColor = 'rgba(0,0,0,0.9)';
+    modal.style.display = 'flex';
+    modal.style.alignItems = 'center';
+    modal.style.justifyContent = 'center';
+    modal.style.zIndex = '9999';
+    modal.style.backdropFilter = 'blur(5px)';
+    
+    // Contenu du modal avec l'image
+    modal.innerHTML = `
+        <div class="preview-content" style="position: relative; max-width: 90%; max-height: 90%; text-align: center;">
+            <img src="${imageUrl}" style="max-width: 100%; max-height: 85vh; border-radius: 12px; box-shadow: 0 5px 35px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.1);">
+            <div style="text-align: center; margin-top: 20px; display: flex; justify-content: center; gap: 15px;">
+                <button id="download-preview" style="background-color: #6366f1; color: white; border: none; padding: 12px 24px; border-radius: 8px; margin-right: 10px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.5);">
+                    <i class="fas fa-download"></i> Télécharger
+                </button>
+                <button id="share-preview" style="background-color: #25D366; color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.5);">
+                    <i class="fas fa-share-alt"></i> Partager
+                </button>
+            </div>
+            <button id="close-preview" style="background-color: rgba(255,255,255,0.2); color: white; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; position: absolute; top: -50px; right: 0; font-size: 20px; cursor: pointer; transition: all 0.2s ease;">
+                <i class="fas fa-times"></i>
+            </button>
+            <p style="color: white; font-size: 0.9rem; margin-top: 15px; text-align: center;">
+                Format optimisé pour ${getPlatformName(platform)}
+            </p>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // Effet d'entrée
+    const previewContent = modal.querySelector('.preview-content');
+    previewContent.style.opacity = '0';
+    previewContent.style.transform = 'scale(0.95)';
+    previewContent.style.transition = 'all 0.3s ease';
+    
+    setTimeout(() => {
+        previewContent.style.opacity = '1';
+        previewContent.style.transform = 'scale(1)';
+    }, 50);
+    
+    // Ajout d'un effet hover sur le bouton de fermeture
+    const closeBtn = document.getElementById('close-preview');
+    closeBtn.addEventListener('mouseenter', function() {
+        this.style.backgroundColor = 'rgba(255,255,255,0.3)';
+        this.style.transform = 'scale(1.1)';
+    });
+    
+    closeBtn.addEventListener('mouseleave', function() {
+        this.style.backgroundColor = 'rgba(255,255,255,0.2)';
+        this.style.transform = 'scale(1)';
+    });
+    
+    // Gestion des événements des boutons
+    document.getElementById('download-preview').addEventListener('click', function() {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = imageUrl;
+        downloadLink.download = `aura-musicale-${platform}.png`;
+        downloadLink.click();
+        
+        // Effet de confirmation
+        showToast("Image téléchargée !", "success");
+    });
+    
+    document.getElementById('share-preview').addEventListener('click', function() {
+        // Fermer le modal de prévisualisation avec animation
+        previewContent.style.opacity = '0';
+        previewContent.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            document.body.removeChild(modal);
+            
+            // Partager l'image sur la plateforme sélectionnée
+            const shareUrl = window.location.href;
+            const shareTitle = `J'ai découvert mon aura musicale : ${userProfile.name}`;
+            const shareDescription = "Faites le quiz et découvrez votre propre aura musicale !";
+            
+            shareWithImage(platform, {
+                url: shareUrl,
+                title: shareTitle,
+                description: shareDescription,
+                imageUrl: imageUrl
+            });
+        }, 300);
+    });
+    
+    document.getElementById('close-preview').addEventListener('click', function() {
+        // Animation de fermeture
+        previewContent.style.opacity = '0';
+        previewContent.style.transform = 'scale(0.95)';
+        
+        setTimeout(() => {
+            document.body.removeChild(modal);
+        }, 300);
+    });
+    
+    // Fermeture au clic à l'extérieur de l'image
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            previewContent.style.opacity = '0';
+            previewContent.style.transform = 'scale(0.95)';
+            
+            setTimeout(() => {
+                document.body.removeChild(modal);
+            }, 300);
+        }
+    });
+}
+
+// Fonction pour obtenir le nom lisible des plateformes
+function getPlatformName(platform) {
+    switch(platform.toLowerCase()) {
+        case 'instagram':
+            return 'Instagram';
+        case 'instagram-story':
+            return 'Instagram Stories';
+        case 'facebook':
+            return 'Facebook';
+        case 'twitter':
+        case 'x':
+            return 'X / Twitter';
+        case 'linkedin':
+            return 'LinkedIn';
+        case 'whatsapp':
+            return 'WhatsApp';
+        default:
+            return 'les réseaux sociaux';
+    }
+}
+
+// Fonction pour afficher un message toast
+function showToast(message, type = 'info') {
+    // Créer l'élément toast
+    const toast = document.createElement('div');
+    toast.textContent = message;
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.left = '50%';
+    toast.style.transform = 'translateX(-50%) translateY(100px)';
+    toast.style.padding = '12px 24px';
+    toast.style.borderRadius = '30px';
+    toast.style.fontSize = '1rem';
+    toast.style.fontWeight = '500';
+    toast.style.zIndex = '10000';
+    toast.style.transition = 'all 0.3s ease';
+    toast.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+    
+    // Appliquer les styles selon le type
+    if (type === 'success') {
+        toast.style.backgroundColor = '#25D366';
+        toast.style.color = 'white';
+    } else if (type === 'error') {
+        toast.style.backgroundColor = '#FF3D55';
+        toast.style.color = 'white';
+    } else {
+        toast.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
+        toast.style.color = '#333';
+    }
+    
+    // Ajouter au DOM
+    document.body.appendChild(toast);
+    
+    // Animation d'entrée
+    setTimeout(() => {
+        toast.style.transform = 'translateX(-50%) translateY(0)';
+    }, 10);
+    
+    // Supprimer après un délai
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(-50%) translateY(-20px)';
+        
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
+    }, 3000);
+}
+        
+        // Initialisation des boutons de partage améliorés
+        function initSocialImageSharing() {
+            // Créer un bouton de prévisualisation
+            const previewButton = document.createElement('button');
+            previewButton.id = 'preview-share-image';
+            previewButton.className = 'social-share-button preview-button';
+            previewButton.innerHTML = '<i class="fas fa-eye"></i>';
+            previewButton.title = 'Prévisualiser l\'image de partage';
+            previewButton.style.backgroundColor = '#6366f1';
+            
+            // Essayer d'ajouter le bouton à la barre de partage si elle existe
+            const shareBar = document.querySelector('.social-share-bar');
+            if (shareBar) {
+                shareBar.appendChild(previewButton);
+            }
+            
+            // Configurer les boutons de partage
+            setupImageSharingButtons();
+            
+            // Configurer le bouton de prévisualisation
+            previewButton.addEventListener('click', async function() {
+                try {
+                    // Afficher un indicateur de chargement
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                    
+                    // Générer une image pour Instagram par défaut
+                    const imageData = await generateSocialShareImage(userProfile, 'instagram');
+                    
+                    // Afficher la prévisualisation
+                    createImagePreviewModal(imageData.url, 'instagram');
+                    
+                    // Restaurer l'icône
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                } catch (error) {
+                    console.error("Erreur lors de la génération de l'image:", error);
+                    this.innerHTML = '<i class="fas fa-eye"></i>';
+                }
+            });
+        }
+    </script>
+</body>
+</html>
